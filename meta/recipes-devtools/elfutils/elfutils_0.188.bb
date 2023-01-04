@@ -34,6 +34,8 @@ PTEST_ENABLED:libc-musl = "0"
 EXTRA_OECONF = "--program-prefix=eu-"
 
 BUILD_CFLAGS += "-Wno-error=stringop-overflow"
+# compatibility with curl 7.87; can be removed when elfutils upstream fixes the deprecation fails
+BUILD_CFLAGS += "-Wno-error=deprecated-declarations"
 
 DEPENDS_BZIP2 = "bzip2-replacement-native"
 DEPENDS_BZIP2:class-target = "bzip2"
