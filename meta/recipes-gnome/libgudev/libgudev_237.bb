@@ -9,6 +9,8 @@ SRC_URI[archive.sha256sum] = "0d06b21170d20c93e4f0534dbb9b0a8b4f1119ffb00b4031aa
 
 DEPENDS = "glib-2.0 udev"
 
+BBCLASSEXTEND = "native"
+
 RCONFLICTS:${PN} = "systemd (<= 220)"
 
 LICENSE = "LGPL-2.1-only"
