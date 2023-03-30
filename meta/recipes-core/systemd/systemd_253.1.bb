@@ -6,6 +6,8 @@ PE = "1"
 
 DEPENDS = "intltool-native gperf-native libcap util-linux python3-jinja2-native"
 
+BBCLASSEXTEND = "native"
+
 SECTION = "base/shell"
 
 inherit useradd pkgconfig meson perlnative update-rc.d update-alternatives qemu systemd gettext bash-completion manpages features_check
@@ -60,7 +62,7 @@ PAM_PLUGINS = " \
     pam-plugin-namespace \
 "
 
-PACKAGECONFIG ??= " \
+PACKAGECONFIG:class-target ??= " \
     ${@bb.utils.filter('DISTRO_FEATURES', 'acl audit efi ldconfig pam selinux smack usrmerge polkit seccomp', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'rfkill', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
@@ -197,7 +199,7 @@ PACKAGECONFIG[selinux] = "-Dselinux=true,-Dselinux=false,libselinux,initscripts-
 PACKAGECONFIG[smack] = "-Dsmack=true,-Dsmack=false"
 PACKAGECONFIG[sysext] = "-Dsysext=true, -Dsysext=false"
 PACKAGECONFIG[sysusers] = "-Dsysusers=true,-Dsysusers=false"
-PACKAGECONFIG[sysvinit] = "-Dsysvinit-path=${sysconfdir}/init.d -Dsysvrcnd-path=${sysconfdir},-Dsysvinit-path= -Dsysvrcnd-path=,,systemd-compat-units update-rc.d"
+PACKAGECONFIG[sysvinit] = "-Dsysvinit-path=${sysconfdir}/init.d -Dsysvrcnd-path=${sysconfdir},-Dsysvinit-path= -Dsysvrcnd-path=,,${@'systemd-compat-units update-rc.d' if d.getVar('PN') == d.getVar('BPN') else ''}"
 # When enabled use reproducble build timestamp if set as time epoch,
 # or build time if not. When disabled, time epoch is unset.
 def build_epoch(d):
@@ -211,7 +213,7 @@ PACKAGECONFIG[sbinmerge] = "-Dsplit-bin=false,-Dsplit-bin=true"
 PACKAGECONFIG[userdb] = "-Duserdb=true,-Duserdb=false"
 PACKAGECONFIG[utmp] = "-Dutmp=true,-Dutmp=false"
 PACKAGECONFIG[valgrind] = "-DVALGRIND=1,,valgrind"
-PACKAGECONFIG[vconsole] = "-Dvconsole=true,-Dvconsole=false,,${PN}-vconsole-setup"
+PACKAGECONFIG[vconsole] = "-Dvconsole=true,-Dvconsole=false,,${BPN}-vconsole-setup"
 PACKAGECONFIG[wheel-group] = "-Dwheel-group=true, -Dwheel-group=false"
 PACKAGECONFIG[xdg-autostart] = "-Dxdg-autostart=true,-Dxdg-autostart=false"
 # Verify keymaps on locale change
@@ -362,6 +364,12 @@ do_install() {
         sed -i -e 's/#RebootWatchdogSec=10min/RebootWatchdogSec=${WATCHDOG_TIMEOUT}/' \
             ${D}/${sysconfdir}/systemd/system.conf
     fi
+}
+
+do_install:append:class-native () {
+    rm -f ${D}${bindir}/systemctl
+	ln -sf ..${base_bindir_native}/udevadm ${D}${base_sbindir}/udevadm
+	ln -sf ..${systemd_unitdir#${rootprefix}}/systemd-udevd ${D}${base_sbindir}/udevd
 }
 
 python populate_packages:prepend (){
@@ -670,10 +678,10 @@ FILES:${PN} = " ${base_bindir}/* \
 FILES:${PN}-dev += "${base_libdir}/security/*.la ${datadir}/dbus-1/interfaces/ ${sysconfdir}/rpm/macros.systemd"
 
 RDEPENDS:${PN} += "kmod dbus util-linux-mount util-linux-umount udev (= ${EXTENDPKGV}) systemd-udev-rules util-linux-agetty util-linux-fsck"
-RDEPENDS:${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'serial-getty-generator', '', 'systemd-serialgetty', d)}"
-RDEPENDS:${PN} += "volatile-binds"
+RDEPENDS:${PN}:class-target += "${@bb.utils.contains('PACKAGECONFIG', 'serial-getty-generator', '', 'systemd-serialgetty', d)}"
+RDEPENDS:${PN}:class-target += "volatile-binds"
 
-RRECOMMENDS:${PN} += "systemd-extra-utils \
+RRECOMMENDS:${PN}:class-target += "systemd-extra-utils \
                       udev-hwdb \
                       e2fsprogs-e2fsck \
                       kernel-module-autofs4 kernel-module-unix kernel-module-ipv6 kernel-module-sch-fq-codel \
