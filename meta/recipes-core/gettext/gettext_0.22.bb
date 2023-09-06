@@ -200,6 +200,8 @@ RDEPENDS:${PN}-ptest:append:libc-glibc = "\
     glibc-charmap-euc-kr \
     glibc-gconv-euc-jp \
     glibc-charmap-euc-jp \
+    glibc-gconv-gb18030 \
+    glibc-charmap-gb18030 \
     locale-base-de-de \
     locale-base-fr-fr \
 "
