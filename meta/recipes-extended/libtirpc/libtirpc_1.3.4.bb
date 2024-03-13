@@ -21,13 +21,11 @@ CVE_CHECK_IGNORE += "CVE-2021-46828"
 
 inherit autotools pkgconfig
 
-PACKAGECONFIG ??= ""
-PACKAGECONFIG[gssapi] = "--enable-gssapi,--disable-gssapi,krb5"
-
 PACKAGECONFIG ??= "\
 	${@bb.utils.filter('DISTRO_FEATURES', 'ipv6', d)} \
 "
 PACKAGECONFIG[ipv6] = "--enable-ipv6,--disable-ipv6"
+PACKAGECONFIG[gssapi] = "--enable-gssapi,--disable-gssapi,krb5"
 
 do_install:append() {
 	test -e ${D}${sysconfdir}/netconfig && chown root:root ${D}${sysconfdir}/netconfig
