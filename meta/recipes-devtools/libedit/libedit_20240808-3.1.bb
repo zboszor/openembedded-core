@@ -13,7 +13,7 @@ inherit autotools
 SRC_URI = "http://www.thrysoee.dk/editline/${BP}.tar.gz \
            file://stdc-predef.patch \
           "
-SRC_URI[sha256sum] = "3a489097bb4115495f3bd85ae782852b7097c556d9500088d74b6fa38dbd12ff"
+SRC_URI[sha256sum] = "5f0573349d77c4a48967191cdd6634dd7aa5f6398c6a57fe037cc02696d6099f"
 
 # configure hardcodes /usr/bin search path bypassing HOSTTOOLS
 CACHED_CONFIGUREVARS += "ac_cv_path_NROFF=/bin/false"
@@ -23,9 +23,3 @@ PR = "r1"
 HASHEQUIV_HASH_VERSION .= ".1"
 
 BBCLASSEXTEND = "native nativesdk"
-
-inherit update-alternatives
-
-ALTERNATIVE_PRIORITY = "90"
-ALTERNATIVE:${PN}-doc = "history.3"
-ALTERNATIVE_LINK_NAME[history.3] = "${mandir}/man3/history.3"
