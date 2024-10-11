@@ -29,6 +29,7 @@ SRC_URI = "https://download.qemu.org/${BPN}-${PV}.tar.xz \
            file://0009-Define-MAP_SYNC-and-MAP_SHARED_VALIDATE-on-needed-li.patch \
            file://0010-hw-pvrdma-Protect-against-buggy-or-malicious-guest-d.patch \
            file://0002-linux-user-Replace-use-of-lfs64-related-functions-an.patch \
+           file://0001-sched_attr-Do-not-define-for-glibc-2.41.patch \
            file://fixedmeson.patch \
            file://fixmips.patch \
            file://qemu-guest-agent.init \
