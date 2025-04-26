@@ -18,6 +18,7 @@ SRC_URI = "git://gitlab.freedesktop.org/pkg-config/pkg-config.git;branch=master;
            file://0001-glib-gettext.m4-Update-AM_GLIB_GNU_GETTEXT-to-match-.patch \
            file://0001-autotools-remove-support-for-the-__int64-type.-See-1.patch \
            file://0001-autotools-use-C99-printf-format-specifiers-on-Window.patch \
+           file://0001-Do-not-use-bool-as-a-field-name.patch \
            "
 
 S = "${WORKDIR}/git"
