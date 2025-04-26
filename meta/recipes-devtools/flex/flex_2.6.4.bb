@@ -20,6 +20,7 @@ SRC_URI = "https://github.com/westes/flex/releases/download/v${PV}/flex-${PV}.ta
            file://check-funcs.patch \
            file://0001-Emit-no-line-directives-if-gen_line_dirs-is-false.patch \
            file://0001-build-tests-add-missing-parser-scanner-dependencies.patch \
+           file://0001-Match-malloc-signature-to-its-use.patch \
            "
 
 SRC_URI[md5sum] = "2882e3179748cc9f9c23ec593d6adc8d"
