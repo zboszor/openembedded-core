@@ -1,7 +1,6 @@
 require pseudo.inc
 
 SRC_URI = "git://git.yoctoproject.org/pseudo;branch=master;protocol=https \
-           file://glibc238.patch \
            file://fallback-passwd \
            file://fallback-group \
            "
@@ -14,9 +13,9 @@ SRC_URI:append:class-nativesdk = " \
     "
 SRC_URI[prebuilt.sha256sum] = "ed9f456856e9d86359f169f46a70ad7be4190d6040282b84c8d97b99072485aa"
 
-SRCREV = "d1db9c219abf92f15303486a409292237f1fc790"
+SRCREV = "3fac97341f0f8270ca28a91098d0a58ca306a6bd"
 S = "${WORKDIR}/git"
-PV = "1.9.2+git"
+PV = "1.9.0+git${SRCPV}"
 
 # largefile and 64bit time_t support adds these macros via compiler flags globally
 # remove them for pseudo since pseudo intercepts some of the functions which will be
