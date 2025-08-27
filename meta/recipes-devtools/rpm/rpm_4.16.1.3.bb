@@ -84,6 +84,8 @@ PACKAGECONFIG[rpm2archive] = "--with-archive,--without-archive,libarchive"
 
 ASNEEDED = ""
 
+CFLAGS:append = " -std=c17"
+
 # Direct rpm-native to read configuration from our sysroot, not the one it was compiled in
 # libmagic also has sysroot path contamination, so override it
 
