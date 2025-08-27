@@ -37,6 +37,8 @@ PACKAGECONFIG[libtasn1] = "--with-included-libtasn1=no,--with-included-libtasn1,
 PACKAGECONFIG[p11-kit] = "--with-p11-kit,--without-p11-kit,p11-kit"
 PACKAGECONFIG[tpm] = "--with-tpm,--without-tpm,trousers"
 
+CFLAGS:append = " -std=c17"
+
 EXTRA_OECONF = " \
     --enable-doc \
     --disable-libdane \
