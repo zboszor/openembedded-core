@@ -91,5 +91,7 @@ SRC_URI = "\
      file://0050-CVE-2025-11840.patch \
      file://CVE-2025-1181-pre.patch \
      file://CVE-2025-1181.patch \
+     file://0001-bfd-fix-std-gnu23-compatibility-wrt-_Bool.patch \
+     file://0002-opcodes-fix-std-gnu23-compatibility-wrt-static_asser.patch \
 "
 S  = "${WORKDIR}/git"
