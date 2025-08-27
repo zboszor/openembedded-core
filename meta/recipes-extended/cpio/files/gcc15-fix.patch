@@ -17,16 +17,14 @@ diff -durpN cpio-2.15.old/src/extern.h cpio-2.15/src/extern.h
  extern void (*copy_function) ();
  extern char *change_directory_option;
  
---- cpio-2.15.old/src/global.c	2024-01-14 12:42:18.000000000 +0100
-+++ cpio-2.15/src/global.c	2025-08-27 09:47:19.871893208 +0200
-@@ -183,10 +183,6 @@
- /* Extract to standard output? */
- bool to_stdout_option = false;
+--- cpio-2.15.old/src/global.c	2025-08-27 09:55:36.504003037 +0200
++++ cpio-2.15/src/global.c	2025-08-27 09:56:45.478361533 +0200
+@@ -185,7 +185,7 @@
  
--/* A pointer to either lstat or stat, depending on whether
--   dereferencing of symlinks is done for input files.  */
+ /* A pointer to either lstat or stat, depending on whether
+    dereferencing of symlinks is done for input files.  */
 -int (*xstat) ();
--
++int (*xstat) (const char *,  struct stat *);
+ 
  /* Which copy operation to perform. (-i, -o, -p) */
  void (*copy_function) () = 0;
- 
