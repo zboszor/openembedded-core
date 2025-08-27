@@ -38,5 +38,7 @@ SRC_URI = "\
      file://0017-bfd-Close-the-file-descriptor-if-there-is-no-archive.patch \
      file://0001-CVE-2021-42574.patch \
      file://161e87d12167b1e36193385485c1f6ce92f74f02.patch \
+     file://0001-bfd-fix-std-gnu23-compatibility-wrt-_Bool.patch \
+     file://0002-opcodes-fix-std-gnu23-compatibility-wrt-static_asser.patch \
 "
 S  = "${WORKDIR}/git"
