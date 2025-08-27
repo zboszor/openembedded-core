@@ -1,4 +1,4 @@
-From d248840337ceae97da54c77a919cf46be8817c53 Mon Sep 17 00:00:00 2001
+From c3c633d170d98dcf0221b86382406b25dcd903c2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 30 Aug 2022 15:58:32 -0700
 Subject: [PATCH] Add needed headers for including mbstate_t and exit()
@@ -11,18 +11,18 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/configure b/configure
-index a49b1759..d98f7019 100755
+index b9101b33..ca85bb21 100755
 --- a/configure
 +++ b/configure
-@@ -3762,6 +3762,7 @@ rm -f "conftest.$ac_objext" "conftest.$ac_ext"
+@@ -3763,6 +3763,7 @@ rm -f "conftest.$ac_objext" "conftest.$ac_ext"
    cat >"conftest.$ac_ext" <<_ACEOF
- #line 3763 "configure"
+ #line 3764 "configure"
  #include "confdefs.h"
 +#include <stdlib.h>
  $ac_declaration
  int
  main (void)
-@@ -13869,6 +13870,7 @@ cat >"conftest.$ac_ext" <<_ACEOF
+@@ -13891,6 +13892,7 @@ cat >"conftest.$ac_ext" <<_ACEOF
  #include <stdlib.h>
  #include <stdarg.h>
  #include <stdio.h>
