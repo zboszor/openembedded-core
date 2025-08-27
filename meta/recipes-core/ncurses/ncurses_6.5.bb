@@ -7,7 +7,7 @@ SRC_URI += "file://0001-tic-hang.patch \
            file://CVE-2025-6141.patch \
            "
 # commit id corresponds to the revision in package version
-SRCREV = "1c55d64d9d3e00399a21f04e9cac1e472ab5f70a"
+SRCREV = "86378f5b4b9c8a32f279e1c9f473350590d26b10"
 S = "${WORKDIR}/git"
 EXTRA_OECONF += "--with-abi-version=5"
 UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>\d+_\d+)$"
