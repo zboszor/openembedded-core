@@ -1,4 +1,4 @@
-From d7486e7752a6f84fc6b965489b871e75c38a258e Mon Sep 17 00:00:00 2001
+From 43b2a3713211304a49a4b5f196f6751dede45f00 Mon Sep 17 00:00:00 2001
 From: Nathan Rossi <nathan@nathanrossi.com>
 Date: Mon, 14 Dec 2020 13:39:02 +1000
 Subject: [PATCH] gen-pkgconfig.in: Do not include LDFLAGS in generated pc
