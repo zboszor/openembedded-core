@@ -1,4 +1,4 @@
-From b3f4dd7797e967f957031f01578ebf7fa0c87b3c Mon Sep 17 00:00:00 2001
+From e27a33cdd7721a24e335e2d8688086d8fcba254e Mon Sep 17 00:00:00 2001
 From: Hongxu Jia <hongxu.jia@windriver.com>
 Date: Fri, 30 Mar 2018 10:02:24 +0800
 Subject: [PATCH] tic hang
@@ -18,10 +18,10 @@ Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
  1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/misc/terminfo.src b/misc/terminfo.src
-index 039837ee..a34db823 100644
+index 489c4802..dfbd52a9 100644
 --- a/misc/terminfo.src
 +++ b/misc/terminfo.src
-@@ -6577,12 +6577,11 @@ konsole-xf3x|KDE console window with keyboard for XFree86 3.x xterm,
+@@ -6611,12 +6611,11 @@ konsole-xf3x|KDE console window with keyboard for XFree86 3.x xterm,
  # The value for kbs (see konsole-vt100) reflects local customization rather
  # than the settings used for XFree86 xterm.
  konsole-xf4x|KDE console window with keyboard for XFree86 4.x xterm,
