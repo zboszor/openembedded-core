@@ -86,6 +86,8 @@ EXTRA_OECONF:class-native = "--without-x --with-system-libtiff=no \
 CFLAGS += "-DHAVE_SYS_TIME_H=1"
 BUILD_CFLAGS += "-DHAVE_SYS_TIME_H=1"
 
+CC += "-std=gnu17"
+
 inherit autotools-brokensep
 
 do_configure:prepend:class-target () {
