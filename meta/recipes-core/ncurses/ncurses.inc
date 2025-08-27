@@ -18,7 +18,7 @@ SRC_URI = "git://github.com/ThomasDickey/ncurses-snapshots.git;protocol=https;br
 EXTRA_AUTORECONF = "-I m4"
 
 CACHED_CONFIGUREVARS = "cf_cv_func_nanosleep=yes"
-CACHED_CONFIGUREVARS:append:linux = " cf_cv_working_poll=yes"
+CACHED_CONFIGUREVARS:append:linux = " cf_cv_working_poll=yes cf_cv_header_stdbool_h=1"
 
 EXTRASITECONFIG = "CFLAGS='${CFLAGS} -I${SYSROOT_DESTDIR}${includedir}'"
 
