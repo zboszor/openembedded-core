@@ -21,6 +21,7 @@ SRC_URI[sha256sum] = "7399e9a6708c32d678a72a63219e96f23be0be2336e50fd1348498d070
 # -16548 required for v3.1.3pre1. Already in v3.1.3.
 CVE_CHECK_WHITELIST += " CVE-2017-16548 "
 
+# Doesn't use automake
 inherit autotools-brokensep
 
 PACKAGECONFIG ??= "acl attr \
@@ -52,14 +53,10 @@ EXTRA_OECONF = "--disable-md2man --with-nobody-group=nogroup"
 #| If you can't fix the issue, re-run ./configure with --disable-roll-simd.
 EXTRA_OECONF:append:libc-musl = " --disable-roll-simd"
 
-# rsync 3.0 uses configure.sh instead of configure, and
-# makefile checks the existence of configure.sh
+# rsync uses configure.sh instead of configure, so delete that file
+# to avoid confusion as we will generate configure.
 do_configure:prepend () {
-	rm -f ${S}/configure ${S}/configure.sh
-}
-
-do_configure:append () {
-	cp -f ${S}/configure ${S}/configure.sh
+       rm -f ${S}/configure.sh
 }
 
 do_install:append() {
