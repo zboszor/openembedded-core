@@ -11,6 +11,7 @@ DEPENDS = "expat glib-2.0 virtual/libintl dbus-glib-native dbus"
 DEPENDS:class-native = "glib-2.0-native dbus-native"
 
 SRC_URI = "https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-${PV}.tar.gz \
+           file://fix-bool-usage.patch \
            file://no-examples.patch \
            file://test-install-makefile.patch \
 "
