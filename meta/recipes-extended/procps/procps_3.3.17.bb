@@ -33,6 +33,10 @@ EXTRA_OECONF = "--enable-skill --disable-modern-top"
 PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)}"
 PACKAGECONFIG[systemd] = "--with-systemd,--without-systemd,systemd"
 
+do_configure:prepend () {
+	rm -f ${S}/po/fr.*
+}
+
 do_install:append () {
 	install -d ${D}${base_bindir}
 	[ "${bindir}" != "${base_bindir}" ] && for i in ${base_bindir_progs}; do mv ${D}${bindir}/$i ${D}${base_bindir}/$i; done
