@@ -1,0 +1,14 @@
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+
+diff -durpN bash-5.1.8.old/Makefile.in bash-5.1.8/Makefile.in
+--- bash-5.1.8.old/Makefile.in	2025-09-01 09:40:49.019278912 +0200
++++ bash-5.1.8/Makefile.in	2025-09-01 10:33:37.021521190 +0200
+@@ -372,7 +372,7 @@ INTL_INC = @INTL_INC@
+ LIBINTL_H = @LIBINTL_H@
+ 
+ # libiconv
+-LIBICONV = @LIBICONV@
++LIBICONV = 
+ 
+ # tests
+ LIBINTL = @LIBINTL@
