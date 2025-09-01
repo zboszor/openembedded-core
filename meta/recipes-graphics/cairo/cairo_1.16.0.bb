@@ -35,6 +35,9 @@ SRC_URI[sha256sum] = "5e7b29b3f113ef870d1e3ecf8adf21f923396401604bda16d44be45e66
 
 inherit autotools pkgconfig upstream-version-is-even gtk-doc multilib_script
 
+CFLAGS:append:class-native = " -std=gnu11"
+CXXFLAGS:append:class-native = " -std=gnu++11"
+
 MULTILIB_SCRIPTS = "${PN}-perf-utils:${bindir}/cairo-trace"
 
 X11DEPENDS = "virtual/libx11 libsm libxrender libxext"
