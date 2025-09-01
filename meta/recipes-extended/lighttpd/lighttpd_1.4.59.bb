@@ -26,6 +26,8 @@ SRC_URI[sha256sum] = "fb953db273daef08edb6e202556cae8a3d07eed6081c96bd9903db957d
 
 DEPENDS = "virtual/crypt"
 
+BUILD_CFLAGS += "-std=gnu17"
+
 PACKAGECONFIG ??= "openssl pcre zlib \
     ${@bb.utils.contains('DISTRO_FEATURES', 'xattr', 'attr', '', d)} \
 "
