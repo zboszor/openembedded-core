@@ -27,7 +27,7 @@ EXTRA_OECONF += "--without-libsigsegv-prefix"
 
 EXTRA_OEMAKE += "'infodir=${infodir}'"
 
-CFLAGS += "-std=gnu17"
+CFLAGS:append = " -std=gnu17"
 
 do_compile_ptest() {
 	cd ${B}/tests
