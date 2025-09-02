@@ -19,6 +19,8 @@ SRC_URI = "git://github.com/plougher/squashfs-tools.git;protocol=https;branch=ma
 
 S = "${WORKDIR}/git/squashfs-tools"
 
+CFLAGS:append:class-native = " -std=gnu17 -Wno-incompatible-pointer-types"
+
 EXTRA_OEMAKE = "${PACKAGECONFIG_CONFARGS}"
 
 PACKAGECONFIG ??= "gzip xz lzo lz4 lzma xattr zstd reproducible"
