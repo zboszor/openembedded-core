@@ -17,6 +17,8 @@ SRC_URI[sha256sum] = "e1298022472da5589b7f2be1d5ee3c1b66ec3d96dfbad03dc642afd009
 
 inherit autotools pkgconfig gettext texinfo ptest
 
+CFLAGS:append:class-native = " -std=gnu17 -Wno-incompatible-pointer-types"
+
 PACKAGECONFIG ?= "readline"
 PACKAGECONFIG[device-mapper] = "--enable-device-mapper,--disable-device-mapper,libdevmapper lvm2"
 PACKAGECONFIG[readline] = "--with-readline,--without-readline,readline"
