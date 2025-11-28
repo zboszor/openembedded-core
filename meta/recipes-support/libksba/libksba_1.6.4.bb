@@ -16,9 +16,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=fd541d83f75d038c4e0617b672ed8bda \
 
 DEPENDS = "libgpg-error"
 
-BINCONFIG = "${bindir}/ksba-config"
-
-inherit autotools binconfig-disabled pkgconfig texinfo
+inherit autotools pkgconfig texinfo
 
 require recipes-support/gnupg/drop-unknown-suffix.inc
 
