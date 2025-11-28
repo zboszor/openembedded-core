@@ -12,6 +12,7 @@ PV = "0+git"
 
 BB_GIT_SHALLOW = ""
 
+S = "${WORKDIR}/git"
 B = "${WORKDIR}/build"
 
 # Map from our _OS strings to the GN's platform values.
