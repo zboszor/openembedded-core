@@ -22,9 +22,7 @@ SRC_URI = "${GNUPG_MIRROR}/libgpg-error/libgpg-error-${PV}.tar.bz2 \
 
 SRC_URI[sha256sum] = "82c3d2deb4ad96ad3925d6f9f124fe7205716055ab50e291116ef27975d169c0"
 
-BINCONFIG = "${bindir}/gpg-error-config"
-
-inherit autotools binconfig-disabled pkgconfig gettext multilib_header multilib_script ptest
+inherit autotools pkgconfig gettext multilib_header multilib_script ptest
 
 require recipes-support/gnupg/drop-unknown-suffix.inc
 
@@ -38,6 +36,9 @@ do_install:append() {
 	# we don't have common lisp in OE
 	rm -rf "${D}${datadir}/common-lisp/"
 	oe_multilib_header gpg-error.h gpgrt.h
+
+	# Remove gpg-error-config so gpg-error.pc would be picked up
+	rm -f "${D}${bindir}/gpg-error-config"
 }
 
 do_compile_ptest() {
