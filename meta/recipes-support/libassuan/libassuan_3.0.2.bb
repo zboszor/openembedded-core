@@ -22,9 +22,7 @@ SRC_URI = "${GNUPG_MIRROR}/libassuan/libassuan-${PV}.tar.bz2 \
 
 SRC_URI[sha256sum] = "d2931cdad266e633510f9970e1a2f346055e351bb19f9b78912475b8074c36f6"
 
-BINCONFIG = "${bindir}/libassuan-config"
-
-inherit autotools texinfo binconfig-disabled pkgconfig multilib_header
+inherit autotools texinfo pkgconfig multilib_header
 
 require recipes-support/gnupg/drop-unknown-suffix.inc
 
