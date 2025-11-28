@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=f27defe1e96c2e1ecd4e0c9be8967949 \
                     file://src/assuan.c;endline=20;md5=ab92143a5a2adabd06d7994d1467ea5c\
                     file://src/assuan-defs.h;endline=20;md5=15d950c83e82978e35b35e790d7e4d39"
 
-DEPENDS = "libgpg-error"
+DEPENDS = "libgpg-error gnulib-native"
 
 UPSTREAM_CHECK_URI = "https://gnupg.org/download/index.html"
 SRC_URI = "${GNUPG_MIRROR}/libassuan/libassuan-${PV}.tar.bz2 \
@@ -28,9 +28,16 @@ inherit autotools texinfo binconfig-disabled pkgconfig multilib_header
 
 require recipes-support/gnupg/drop-unknown-suffix.inc
 
-do_configure:prepend () {
+addtask preconfigure after do_patch before do_configure
+
+do_preconfigure () {
 	# Else these could be used in preference to those in aclocal-copy
 	rm -f ${S}/m4/*.m4
+}
+
+do_configure:prepend () {
+	mkdir -p ${S}/m4
+	cp ${STAGING_DATADIR_NATIVE}/gnulib/m4/socklen.m4 ${S}/m4/
 }
 
 do_install:append () {
