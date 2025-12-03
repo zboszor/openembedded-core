@@ -9,6 +9,7 @@ SRCREV = "21710612d35cd952490959bfa6ea9fe87aaa52dd"
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git;branch=master;protocol=https \
            file://0001-erofs-utils-fsck-don-t-allocate-read-too-large-exten.patch \
            file://0002-erofs-utils-fsck-block-insane-long-paths-when-extrac.patch \
+           file://0001-Fix-declaration-of-rb_iter_init.patch \
 "
 
 UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>(\d+(\.\d+)+))"

@@ -1,0 +1,33 @@
+From 6bd006fd95d0353d586b7eca38b2111d93002ca8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?=
+ <zboszor@gmail.com>
+Date: Wed, 3 Dec 2025 11:43:23 +0100
+Subject: [PATCH] Fix declaration of rb_iter_init()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This fixes the build with GCC 15.
+
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+Upstream-Status: Backport
+---
+ lib/rb_tree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/rb_tree.h b/lib/rb_tree.h
+index 5b35c74..67ec0a7 100644
+--- a/lib/rb_tree.h
++++ b/lib/rb_tree.h
+@@ -93,7 +93,7 @@ int             rb_tree_remove_with_cb  (struct rb_tree *self, void *value, rb_t
+ int             rb_tree_test            (struct rb_tree *self, struct rb_node *root);
+ 
+ struct rb_iter *rb_iter_alloc           ();
+-struct rb_iter *rb_iter_init            ();
++struct rb_iter *rb_iter_init            (struct rb_iter *self);
+ struct rb_iter *rb_iter_create          ();
+ void            rb_iter_dealloc         (struct rb_iter *self);
+ void           *rb_iter_first           (struct rb_iter *self, struct rb_tree *tree);
+-- 
+2.52.0
+
