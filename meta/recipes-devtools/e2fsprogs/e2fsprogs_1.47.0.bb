@@ -8,6 +8,7 @@ SRC_URI += "file://remove.ldconfig.call.patch \
 SRC_URI:append:class-native = " \
            file://e2fsprogs-fix-missing-check-for-permission-denied.patch \
            file://quiet-debugfs.patch \
+           file://0001-libext2fs-fix-std-c23-build-failure.patch \
            "
 
 SRCREV = "f4c9cc4bedacde8408edda3520a32d3842290112"
