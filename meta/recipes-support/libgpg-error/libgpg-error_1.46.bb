@@ -31,6 +31,7 @@ RDEPENDS:${PN}-ptest:append = " make bash"
 MULTILIB_SCRIPTS = "${PN}-dev:${bindir}/gpgrt-config"
 
 CPPFLAGS += "-P"
+CFLAGS:append:class-native = " -std=gnu17"
 
 do_install:append() {
 	# we don't have common lisp in OE
