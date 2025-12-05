@@ -24,7 +24,7 @@ EXTRA_OECONF = "--enable-libgdbm-compat --without-readline"
 CACHED_CONFIGUREVARS += "ac_cv_lib_ndbm_main=no ac_cv_lib_dbm_main=no"
 
 # Not yet ready for C23
-CFLAGS += "-std=gnu11"
+CFLAGS:append = " -std=gnu11"
 
 BBCLASSEXTEND = "native nativesdk"
 
