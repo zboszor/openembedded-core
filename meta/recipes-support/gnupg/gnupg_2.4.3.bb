@@ -26,6 +26,8 @@ SRC_URI:append:class-nativesdk = " file://relocate.patch"
 
 SRC_URI[sha256sum] = "a271ae6d732f6f4d80c258ad9ee88dd9c94c8fdc33c3e45328c4d7c126bd219d"
 
+CFLAGS:append:class-native = " -std=gnu17"
+
 EXTRA_OECONF = "--disable-ldap \
 		--disable-ccid-driver \
 		--with-zlib=${STAGING_LIBDIR}/.. \
