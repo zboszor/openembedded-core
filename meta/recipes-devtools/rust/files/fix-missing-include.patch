@@ -1,0 +1,24 @@
+Upstream-Status: Backport
+
+diff -durpN llvm/include/llvm/ADT/SmallVector.h llvm/include/llvm/ADT/SmallVector.h
+--- llvm/include/llvm/ADT/SmallVector.h	2006-07-24 03:21:28.000000000 +0200
++++ llvm/include/llvm/ADT/SmallVector.h	2025-08-13 16:47:50.058234520 +0200
+@@ -19,6 +19,7 @@
+ #include <algorithm>
+ #include <cassert>
+ #include <cstddef>
++#include <cstdint>
+ #include <cstdlib>
+ #include <cstring>
+ #include <functional>
+diff -durpN llvm/lib/Target/X86/MCTargetDesc/X86MCTargetDesc.h llvm/lib/Target/X86/MCTargetDesc/X86MCTargetDesc.h
+--- llvm/lib/Target/X86/MCTargetDesc/X86MCTargetDesc.h	2006-07-24 03:21:28.000000000 +0200
++++ llvm/lib/Target/X86/MCTargetDesc/X86MCTargetDesc.h	2025-08-13 16:52:35.242200630 +0200
+@@ -13,6 +13,7 @@
+ #ifndef LLVM_LIB_TARGET_X86_MCTARGETDESC_X86MCTARGETDESC_H
+ #define LLVM_LIB_TARGET_X86_MCTARGETDESC_X86MCTARGETDESC_H
+ 
++#include <cstdint>
+ #include <memory>
+ #include <string>
+ 
