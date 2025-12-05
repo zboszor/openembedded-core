@@ -1,0 +1,43 @@
+From efe550c6b8d6105aa27a6bde896076425c992b62 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?=
+ <zboszor@gmail.com>
+Date: Fri, 28 Nov 2025 09:42:53 +0100
+Subject: [PATCH] Fix build with GCC 15
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+Upstream-Status: Backport
+---
+ SPIRV/SpvBuilder.cpp     | 1 +
+ SPIRV/SpvPostProcess.cpp | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/SPIRV/SpvBuilder.cpp b/SPIRV/SpvBuilder.cpp
+index 57e03d5d6..e2751f82d 100644
+--- a/SPIRV/SpvBuilder.cpp
++++ b/SPIRV/SpvBuilder.cpp
+@@ -40,6 +40,7 @@
+ //
+ 
+ #include <cassert>
++#include <cstdint>
+ #include <cstdlib>
+ 
+ #include <unordered_set>
+diff --git a/SPIRV/SpvPostProcess.cpp b/SPIRV/SpvPostProcess.cpp
+index c4be36552..0236ab3d0 100644
+--- a/SPIRV/SpvPostProcess.cpp
++++ b/SPIRV/SpvPostProcess.cpp
+@@ -37,6 +37,7 @@
+ //
+ 
+ #include <cassert>
++#include <cstdint>
+ #include <cstdlib>
+ 
+ #include <unordered_map>
+-- 
+2.52.0
+
