@@ -62,6 +62,8 @@ PACKAGECONFIG[opengl] = "--enable-gl,--disable-gl,virtual/libgl"
 # trace is under GPLv3
 PACKAGECONFIG[trace] = "--enable-trace,--disable-trace"
 
+CFLAGS:append = " -std=gnu17"
+
 EXTRA_OECONF += " \
     ${@bb.utils.contains('TARGET_FPU', 'soft', '--disable-some-floating-point', '', d)} \
     --enable-tee \
