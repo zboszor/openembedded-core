@@ -19,6 +19,8 @@ BBCLASSEXTEND = "native nativesdk"
 
 inherit update-alternatives
 
+CFLAGS:append:class-native = " -std=gnu17"
+
 ALTERNATIVE_PRIORITY = "90"
 ALTERNATIVE:${PN}-doc = "history.3"
 ALTERNATIVE_LINK_NAME[history.3] = "${mandir}/man3/history.3"
