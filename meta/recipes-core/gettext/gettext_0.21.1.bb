@@ -34,6 +34,8 @@ SRC_URI[sha256sum] = "e8c3650e1d8cee875c4f355642382c1df83058bd5a11ee8555c0cf276d
 
 inherit autotools texinfo pkgconfig ptest
 
+CFLAGS:append:class-native = " -std=gnu17"
+
 EXTRA_OECONF += "--without-lispdir \
                  --disable-csharp \
                  --disable-libasprintf \
