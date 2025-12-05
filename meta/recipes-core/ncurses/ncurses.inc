@@ -33,7 +33,7 @@ ENABLE_WIDEC ?= "true"
 BUILD_CPPFLAGS += "-D_GNU_SOURCE"
 
 # Check if we still need it when next release (6.6) happens
-CFLAGS += "-std=gnu17"
+CFLAGS:append = " -std=gnu17"
 
 # natives don't generally look in base_libdir
 base_libdir:class-native = "${libdir}"
