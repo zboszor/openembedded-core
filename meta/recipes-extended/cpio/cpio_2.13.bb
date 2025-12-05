@@ -26,6 +26,8 @@ inherit autotools gettext texinfo ptest
 # Issue applies to use of cpio in SUSE/OBS, doesn't apply to us
 CVE_CHECK_IGNORE += "CVE-2010-4226"
 
+CFLAGS:append = " -std=gnu17"
+
 EXTRA_OECONF += "DEFAULT_RMT_DIR=${sbindir}"
 
 do_install () {
