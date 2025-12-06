@@ -14,6 +14,10 @@ RRECOMMENDS:${PN} = "lighttpd-module-access \
                      lighttpd-module-accesslog"
 
 SRC_URI = "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-${PV}.tar.xz \
+           file://0001-core-_WIN32-casts-to-quiet-some-VS-warnings.patch \
+           file://0002-core-quiet-lemon.c-clang-C2x-warnings.patch \
+           file://0003-lemon-refresh-LEMON-parser-to-SQLite-maint-ver.patch \
+           file://0004-build-quiet-compiler-warnings-in-LEMON-parser.patch \
            file://index.html.lighttpd \
            file://lighttpd.conf \
            file://lighttpd \
