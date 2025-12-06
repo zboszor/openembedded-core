@@ -5,6 +5,7 @@ MAJ_VER = "${@oe.utils.trim_version("${PV}", 2)}"
 SRC_URI = "http://ftp.gnome.org/pub/gnome/sources/gtk+/${MAJ_VER}/gtk+-${PV}.tar.xz \
            file://opengl.patch \
            file://0001-meson.build-build-introspection-according-to-option-.patch \
+           file://0001-Fix-_gtk_get_slowdown.patch \
            "
 SRC_URI[sha256sum] = "27a6ef157743350c807ffea59baa1d70226dbede82a5e953ffd58ea6059fe691"
 
