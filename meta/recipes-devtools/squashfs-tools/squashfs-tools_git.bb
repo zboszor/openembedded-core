@@ -28,6 +28,8 @@ PACKAGECONFIG[xattr] = "XATTR_SUPPORT=1,XATTR_SUPPORT=0,attr"
 PACKAGECONFIG[zstd] = "ZSTD_SUPPORT=1,ZSTD_SUPPORT=0,zstd"
 PACKAGECONFIG[reproducible] = "REPRODUCIBLE_DEFAULT=1,REPRODUCIBLE_DEFAULT=0,"
 
+CFLAGS:append:class-native = " -std=gnu17"
+
 do_compile() {
         cd ${S}/squashfs-tools
 	oe_runmake all
