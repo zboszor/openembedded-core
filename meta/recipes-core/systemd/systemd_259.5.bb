@@ -35,6 +35,7 @@ SRC_URI += " \
            file://0003-Do-not-create-var-log-README.patch \
            file://0001-meson-use-libfido2_cflags-dependency.patch \
            file://0018-shared-fdset-add-detailed-debug-logging-to-fdset_new.patch \
+           file://0004-tpm2-util-fix-PCR-bank-guessing-without-EFI.patch \
            "
 
 PAM_PLUGINS = " \
