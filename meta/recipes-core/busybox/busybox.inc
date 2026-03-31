@@ -171,6 +171,10 @@ do_compile() {
 		oe_runmake busybox.cfg.suid
 		oe_runmake busybox.cfg.nosuid
 
+		if [ -s busybox.cfg.suid ]; then
+			with_suid=y
+		fi
+
 		# workaround for suid bug 10346
 		if ! grep -q "CONFIG_SH_IS_NONE" busybox.cfg.nosuid; then
 			echo "CONFIG_SH_IS_NONE" >> busybox.cfg.suid
@@ -181,7 +185,7 @@ do_compile() {
 		done
 		merge_config.sh -m .config.orig .config.disable.apps
 		cp .config .config.nonapps
-		for s in suid nosuid; do
+		for s in ${with_suid:+suid} nosuid; do
 			cat busybox.cfg.$s | while read item; do
 				grep -w "$item" .config.orig
 			done > .config.app.$s
@@ -205,7 +209,7 @@ do_compile() {
 		fi
 
 		# cleanup
-		rm .config.app.suid .config.app.nosuid .config.disable.apps .config.nonapps
+		rm ${with_suid:+.config.app.suid} .config.app.nosuid .config.disable.apps .config.nonapps
 	else
 		oe_runmake busybox_unstripped
 		cp busybox_unstripped busybox
@@ -244,9 +248,13 @@ do_install () {
 		# can run. Let update-alternatives handle the rest.
 		install -d ${D}${base_bindir}
 		if [ "${BUSYBOX_SPLIT_SUID}" = "1" ]; then
-			install -m 4755 ${B}/busybox.suid ${D}${base_bindir}
+			if [ -e ${B}/busybox.suid ]; then
+				install -m 4755 ${B}/busybox.suid ${D}${base_bindir}
+			fi
 			install -m 0755 ${B}/busybox.nosuid ${D}${base_bindir}
-			install -m 0644 ${S}/busybox.links.suid ${D}${sysconfdir}
+			if [ -e ${S}/busybox.links.suid ]; then
+				install -m 0644 ${S}/busybox.links.suid ${D}${sysconfdir}
+			fi
 			install -m 0644 ${S}/busybox.links.nosuid ${D}${sysconfdir}
 			if grep -q "CONFIG_SH_IS_ASH=y" ${B}/.config; then
 				ln -sf busybox.nosuid ${D}${base_bindir}/sh
@@ -387,10 +395,14 @@ python do_package:prepend () {
 
     dvar = d.getVar('D')
     pn = d.getVar('PN')
-    def set_alternative_vars(links, target):
-        links = d.expand(links)
-        target = d.expand(target)
-        f = open('%s%s' % (dvar, links), 'r')
+    links_prefix = d.expand("${D}${sysconfdir}/busybox.links")
+    target_prefix = d.expand("${base_bindir}/busybox")
+    for suffix in ('', '.suid', '.nosuid'):
+        links = links_prefix + suffix
+        if not os.path.exists(links):
+            continue
+        target = target_prefix + suffix
+        f = open(links, 'r')
         for alt_link_name in f:
             alt_link_name = alt_link_name.strip()
             alt_name = os.path.basename(alt_link_name)
@@ -405,13 +417,6 @@ python do_package:prepend () {
             if os.path.exists('%s%s' % (dvar, target)):
                 d.setVarFlag('ALTERNATIVE_TARGET', alt_name, target)
         f.close()
-        return
-
-    if os.path.exists('%s/etc/busybox.links' % (dvar)):
-        set_alternative_vars("${sysconfdir}/busybox.links", "${base_bindir}/busybox")
-    else:
-        set_alternative_vars("${sysconfdir}/busybox.links.nosuid", "${base_bindir}/busybox.nosuid")
-        set_alternative_vars("${sysconfdir}/busybox.links.suid", "${base_bindir}/busybox.suid")
 }
 
 # This part of code is dedicated to the on target upgrade problem.  It's known
