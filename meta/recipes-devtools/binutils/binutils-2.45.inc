@@ -20,6 +20,8 @@ UPSTREAM_CHECK_GITTAGREGEX = "binutils-(?P<pver>\d+_(\d_?)*)"
 
 CVE_STATUS[CVE-2025-7545] = "cpe-stable-backport: fix available in used git hash"
 CVE_STATUS[CVE-2025-7546] = "cpe-stable-backport: fix available in used git hash"
+CVE_STATUS[CVE-2025-69650] = "disputed: observed behavior only in pre-release code, does not affect any tagged version"
+CVE_STATUS[CVE-2025-69651] = "disputed: observed behavior only in pre-release code, does not affect any tagged version"
 
 SRCREV ?= "2f028c6bb163a045db95439fb92e1dcbc919413c"
 BINUTILS_GIT_URI ?= "git://sourceware.org/git/binutils-gdb.git;branch=${SRCBRANCH};protocol=https"
