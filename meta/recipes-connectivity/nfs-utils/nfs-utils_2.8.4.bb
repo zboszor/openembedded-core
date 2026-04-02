@@ -24,6 +24,10 @@ SRC_URI = "${KERNELORG_MIRROR}/linux/utils/nfs-utils/${PV}/nfs-utils-${PV}.tar.x
            file://0001-locktest-Makefile.am-Do-not-use-build-flags.patch \
            file://0004-Use-nogroup-for-nobody-group.patch \
            file://0005-find-OE-provided-Kerberos.patch \
+           file://CVE-2025-12801-dependent_p1.patch \
+           file://CVE-2025-12801-dependent_p2.patch \
+           file://CVE-2025-12801-dependent_p3.patch \
+           file://CVE-2025-12801.patch \
            "
 
 SRC_URI[sha256sum] = "11c4cc598a434d7d340bad3e072a373ba1dcc2c49f855d44b202222b78ecdbf5"
