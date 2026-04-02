@@ -141,7 +141,7 @@ python do_uki() {
         # not always needed, ukify can detect version from kernel binary
         kernel_version = d.getVar('KERNEL_VERSION')
         if kernel_version:
-            ukify_cmd += "--uname %s" % (kernel_version)
+            ukify_cmd += " --uname %s" % (kernel_version)
     else:
         bb.fatal("ERROR - UKI_KERNEL_FILENAME not set")
 
