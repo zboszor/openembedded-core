@@ -5,19 +5,16 @@ SECTION = "base"
 HOMEPAGE = "http://www.gnu.org/software/groff/"
 LICENSE = "GPL-3.0-only"
 
-LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
+LIC_FILES_CHKSUM = "file://COPYING;md5=1ebbd3e34237af26da5dc08a4e440464"
 
 SRC_URI = "${GNU_MIRROR}/groff/groff-${PV}.tar.gz \
            file://groff-not-search-fonts-on-build-host.patch \
            file://0001-Make-manpages-mulitlib-identical.patch \
-           file://0001-build-Fix-Savannah-64681-webpage.ps-deps.patch \
-           file://0001-build-meintro_fr.ps-depends-on-tbl.patch \
-           file://0001-hdtbl-Fix-Savannah-66316-missing-grn-dep.patch \
-           file://0001-contrib-hdtbl-hdtbl.am-Fix-race-issues-for-parallel-.patch \
-           file://0001-getopt-Fix-type-signature-for-getenv.patch \
+           file://0001-groff-fix-test-groff-not-found-in-cross-compilation.patch \
+           file://0001-gropdf-use-SOURCE_DATE_EPOCH-for-reproducible-builds.patch \
            "
 
-SRC_URI[sha256sum] = "6b9757f592b7518b4902eb6af7e54570bdccba37a871fddb2d30ae3863511c13"
+SRC_URI[sha256sum] = "e79bbcd8ff3ed0200e7ac55d3962a15e118c1229990213025f2fc8b264727570"
 
 DEPENDS = "bison-native groff-native"
 RDEPENDS:${PN} += "perl sed"
@@ -30,6 +27,8 @@ EXTRA_OECONF = "--without-x --with-urw-fonts-dir=/completely/bogus/dir/"
 EXTRA_OEMAKE:class-target = "GROFFBIN=groff GROFF_BIN_PATH=${STAGING_BINDIR_NATIVE}"
 
 CACHED_CONFIGUREVARS += "ac_cv_path_PERL='/usr/bin/env perl' ac_cv_path_BASH_PROG='no' PAGE=A4"
+
+EXTRANATIVEPATH:class-target += "perl-native"
 
 # Delete these generated files since we depend on bison-native
 # and regenerate them. Do it deterministically (always).
