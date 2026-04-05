@@ -562,6 +562,7 @@ RRECOMMENDS:${PN}-container += "\
 FILES:${PN}-extra-utils = "\
                         ${base_bindir}/systemd-escape \
                         ${base_bindir}/systemd-inhibit \
+                        ${bindir}/run0 \
                         ${bindir}/systemd-detect-virt \
                         ${bindir}/systemd-dissect \
                         ${bindir}/systemd-path \
