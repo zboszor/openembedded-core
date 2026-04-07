@@ -65,6 +65,7 @@ SRC_URI = "${BASEURI} \
            file://hardcoded-paths.patch \
            file://CVE-2023-4039.patch \
            file://0026-aarch64-Fix-loose-ldpstp-check-PR111411.patch \
+           file://0001-libcody-Make-it-buildable-by-C-11-to-C-26.patch \
 "
 SRC_URI[sha256sum] = "949a5d4f99e786421a93b532b22ffab5578de7321369975b91aec97adfda8c3b"
 
