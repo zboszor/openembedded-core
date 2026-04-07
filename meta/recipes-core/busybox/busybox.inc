@@ -101,10 +101,8 @@ def features_to_busybox_del(d):
 
 configmangle = '/CONFIG_EXTRA_CFLAGS/d; \
 		'
-OE_FEATURES := "${@features_to_busybox_conf(d)}"
-OE_DEL      := "${@features_to_busybox_del(d)}"
-DO_IPv4 := "${@bb.utils.contains('DISTRO_FEATURES', 'ipv4', 1, 0, d)}"
-DO_IPv6 := "${@bb.utils.contains('DISTRO_FEATURES', 'ipv6', 1, 0, d)}"
+OE_FEATURES = "${@features_to_busybox_conf(d)}"
+OE_DEL      = "${@features_to_busybox_del(d)}"
 
 python () {
   if "${OE_DEL}":
@@ -129,7 +127,8 @@ do_prepare_config () {
 	for i in 'CROSS' 'DISTRO FEATURES'; do echo "### $i"; done >> \
 		${S}/.config
 	sed -i -e '${configmangle}' ${S}/.config
-	if test ${DO_IPv4} -eq 0 && test ${DO_IPv6} -eq 0; then
+
+	if ! ${@bb.utils.contains_any('DISTRO_FEATURES', 'ipv4 ipv6', 'true', 'false', d)}; then
 		# disable networking applets
 		mv ${S}/.config ${S}/.config.oe-tmp
 		awk 'BEGIN{net=0}
