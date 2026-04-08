@@ -26,6 +26,7 @@ SRC_URI = "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/downlo
            file://avoid-host-contamination.patch \
            file://0001-Fix-32-bit-build.patch \
            file://out-of-tree.patch \
+           file://0001-psi-ztype.c-replace-static-const-double-with-macros-.patch \
            "
 
 SRC_URI[sha256sum] = "5bd6da34794928cc7e616f288e32bd0be7f9a5ca2d3c206a0af2c19a4e3a318f"
