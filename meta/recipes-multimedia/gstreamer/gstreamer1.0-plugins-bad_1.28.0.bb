@@ -10,7 +10,7 @@ SRC_URI = "https://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad
            file://0002-avoid-including-sys-poll.h-directly.patch \
            file://0004-opencv-resolve-missing-opencv-data-dir-in-yocto-buil.patch \
            "
-SRC_URI[sha256sum] = "a96bfb68c53a7c9ab1ae279eac7c101f4204fb5c0e4729683b2be64261707446"
+SRC_URI[sha256sum] = "32d825041e5775fc9bf9e8c38e3a5c46c1441eee67f8112572450a9c23c835f0"
 
 S = "${UNPACKDIR}/gst-plugins-bad-${PV}"
 
@@ -38,7 +38,7 @@ PACKAGECONFIG[assrender]       = "-Dassrender=enabled,-Dassrender=disabled,libas
 PACKAGECONFIG[avtp]            = "-Davtp=enabled,-Davtp=disabled,libavtp"
 PACKAGECONFIG[bluez]           = "-Dbluez=enabled,-Dbluez=disabled,bluez5"
 PACKAGECONFIG[bz2]             = "-Dbz2=enabled,-Dbz2=disabled,bzip2"
-PACKAGECONFIG[closedcaption]   = "-Dclosedcaption=enabled,-Dclosedcaption=disabled,pango cairo"
+PACKAGECONFIG[closedcaption]   = "-Dclosedcaption=enabled,-Dclosedcaption=disabled,"
 PACKAGECONFIG[curl]            = "-Dcurl=enabled,-Dcurl=disabled,curl"
 PACKAGECONFIG[dash]            = "-Ddash=enabled,-Ddash=disabled,libxml2"
 PACKAGECONFIG[dc1394]          = "-Ddc1394=enabled,-Ddc1394=disabled,libdc1394"
@@ -125,6 +125,7 @@ EXTRA_OEMESON += " \
     -Dgme=disabled \
     -Dgs=disabled \
     -Dgsm=disabled \
+    -Dhip=disabled \
     -Diqa=disabled \
     -Dladspa=disabled \
     -Dldac=disabled \
@@ -133,6 +134,7 @@ EXTRA_OEMESON += " \
     -Dmediafoundation=disabled \
     -Dmicrodns=disabled \
     -Dmpeg2enc=disabled \
+    -Dmpeghdec=disabled \
     -Dmplex=disabled \
     -Dmusepack=disabled \
     -Dnvcodec=disabled \
@@ -146,12 +148,17 @@ EXTRA_OEMESON += " \
     -Dspandsp=disabled \
     -Dsvthevcenc=disabled \
     -Dteletext=disabled \
+    -Dtflite=disabled \
+    -Dtflite-edgetpu=disabled \
+    -Dtflite-vsi=disabled \
+    -Dvmaf=disabled \
     -Dwasapi=disabled \
     -Dwasapi2=disabled \
     -Dwildmidi=disabled \
     -Dwinks=disabled \
     -Dwinscreencap=disabled \
     -Dwpe=disabled \
+    -Dwpe2=disabled \
     -Dzxing=disabled \
     -Dlcevcdecoder=disabled \
     -Dlcevcencoder=disabled \
