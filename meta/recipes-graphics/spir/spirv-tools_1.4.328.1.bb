@@ -29,6 +29,7 @@ EXTRA_OECMAKE += "\
     -DSPIRV_TOOLS_BUILD_STATIC=OFF \
     -DBUILD_SHARED_LIBS=ON \
     -DSPIRV_SKIP_TESTS=ON \
+    -DSPIRV_WERROR=OFF \
 "
 
 # Force the version description "git describe" related non-reproducibility
