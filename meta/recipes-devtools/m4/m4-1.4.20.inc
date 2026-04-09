@@ -8,6 +8,9 @@ inherit autotools texinfo ptest gettext
 
 SRC_URI = "${GNU_MIRROR}/m4/m4-${PV}.tar.gz \
            file://0001-gettext-h-Avoid-gcc-Wformat-security-warnings-with-d.patch \
+           file://0001-string-h-wchar-h-Fix-some-g-Wsystem-headers-warnings.patch \
+           file://0002-string-h-Fix-compilation-error-on-macOS-with-fortify.patch \
+           file://0003-Port-to-C23-qualifier-generic-fns-like-strchr.patch \
            "
 SRC_URI:append:class-target = " file://run-ptest \
                                 file://0001-test-c32ispunct-Check-for-musl-along-with-glibc.patch \
