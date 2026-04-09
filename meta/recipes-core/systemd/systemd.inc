@@ -17,6 +17,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.GPL2;md5=751419260aa954499f7abaabaa882bbe \
 
 SRCREV = "5e38d199a623563698ab4a69acbbe3afa9135198"
 SRCBRANCH = "v257-stable"
-SRC_URI = "git://github.com/systemd/systemd.git;protocol=https;branch=${SRCBRANCH};tag=v${PV}"
+SRC_URI = "git://github.com/systemd/systemd.git;protocol=https;branch=${SRCBRANCH};tag=v${PV} \
+    file://0001-errno-list-filter-out-EFSBADCRC-and-EFSCORRUPTED.patch \
+"
 
 CVE_PRODUCT = "systemd"
