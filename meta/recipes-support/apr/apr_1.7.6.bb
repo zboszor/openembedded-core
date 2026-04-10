@@ -22,6 +22,7 @@ SRC_URI = "${APACHE_MIRROR}/apr/${BPN}-${PV}.tar.bz2 \
            file://0001-configure-Remove-runtime-test-for-mmap-that-can-map-.patch \
            file://autoconf-2.73.patch \
            file://0001-dso-Check-for-NULL-handle-in-apr_dso_sym.patch \
+           file://0001-ax_prog_cc_for_build.m4-update-to-latest.patch \
            "
 
 SRC_URI[sha256sum] = "49030d92d2575da735791b496dc322f3ce5cff9494779ba8cc28c7f46c5deb32"
