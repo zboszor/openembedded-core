@@ -37,5 +37,6 @@ SRC_URI = "\
      file://0014-Remove-duplicate-pe-dll.o-entry-deom-targ_extra_ofil.patch \
      file://0015-CVE-2024-53589.patch \
      file://0016-CVE-2025-0840.patch \
+     file://0001-gprofng-protect-against-standard-library-macros.patch \
 "
 S  = "${WORKDIR}/git"
