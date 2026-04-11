@@ -22,13 +22,13 @@ In file included from ../include/c.h:17,
 Upstream-Status: Backport [2.42 https://github.com/util-linux/util-linux/commit/711bda1441561bfd2eb6d45fe0bc789535c1f1a8]
 Signed-off-by: Martin Jansa <Martin.Jansa@gmail.com>
 ---
- lsfd-cmd/lsfd.c | 2 +-
+ misc-utils/lsfd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lsfd-cmd/lsfd.c b/lsfd-cmd/lsfd.c
+diff --git a/misc-utils/lsfd.c b/misc-utils/lsfd.c
 index 75cd1de..9aae240 100644
---- a/lsfd-cmd/lsfd.c
-+++ b/lsfd-cmd/lsfd.c
+--- a/misc-utils/lsfd.c
++++ b/misc-utils/lsfd.c
 @@ -1836,7 +1836,7 @@ static void mark_poll_fds_as_multiplexed(char *buf,
  		struct file *file = list_entry(f, struct file, files);
  		if (is_opened_file(file) && !file->multiplexed) {
