@@ -31,9 +31,9 @@ SRCREV_oe-core ?= "05d149ee0905cbce655a9e0c3767e8fdfcbb8997"
 SRCREV_yocto ?= "9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487"
 SRCREV_FORMAT = "bitbake_oe-core_yocto"
 
-SRC_URI = "git://git.openembedded.org/bitbake;name=bitbake;branch=2.16;destsuffix=bitbake \
-           git://git.openembedded.org/openembedded-core;name=oe-core;branch=whinlatter;destsuffix=openembedded-core \
-           git://git.yoctoproject.org/meta-yocto;name=yocto;branch=whinlatter;destsuffix=meta-yocto \
+SRC_URI = "git://git.openembedded.org/bitbake;name=bitbake;branch=2.16;destsuffix=bitbake;protocol=https \
+           git://git.openembedded.org/openembedded-core;name=oe-core;branch=whinlatter;destsuffix=openembedded-core;protocol=https \
+           git://git.yoctoproject.org/meta-yocto;name=yocto;branch=whinlatter;destsuffix=meta-yocto;protocol=https \
            file://Yocto_Build_Appliance.vmx \
            file://Yocto_Build_Appliance.vmxf \
            file://README_VirtualBox_Guest_Additions.txt \
