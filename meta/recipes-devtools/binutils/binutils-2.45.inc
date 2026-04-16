@@ -12,8 +12,8 @@ LIC_FILES_CHKSUM = "\
 
 # When upgrading to next major release, ensure that there is no trailing .0, so
 # that upstream version check can work correctly.
-PV = "2.45"
-CVE_VERSION = "2.45"
+PV = "2.45.1+git"
+CVE_VERSION = "2.45.1"
 SRCBRANCH ?= "binutils-2_45-branch"
 
 UPSTREAM_CHECK_GITTAGREGEX = "binutils-(?P<pver>\d+_(\d_?)*)"
@@ -23,7 +23,7 @@ CVE_STATUS[CVE-2025-7546] = "cpe-stable-backport: fix available in used git hash
 CVE_STATUS[CVE-2025-69650] = "disputed: observed behavior only in pre-release code, does not affect any tagged version"
 CVE_STATUS[CVE-2025-69651] = "disputed: observed behavior only in pre-release code, does not affect any tagged version"
 
-SRCREV ?= "2f028c6bb163a045db95439fb92e1dcbc919413c"
+SRCREV ?= "12d0a1dbc1b9ecc3a3ae7361bccb70ab32c16cf1"
 BINUTILS_GIT_URI ?= "git://sourceware.org/git/binutils-gdb.git;branch=${SRCBRANCH};protocol=https"
 SRC_URI = "\
      ${BINUTILS_GIT_URI} \
