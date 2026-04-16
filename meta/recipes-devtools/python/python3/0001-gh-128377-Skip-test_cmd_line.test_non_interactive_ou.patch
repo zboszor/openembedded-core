@@ -1,0 +1,31 @@
+From 8d02dc113f4498ca7142c17a8698b8b276cd8a5b Mon Sep 17 00:00:00 2001
+From: Yan Yanchii <yyanchiy@gmail.com>
+Date: Sun, 12 Jan 2025 09:27:28 +0100
+Subject: [PATCH] gh-128377: Skip
+ `test_cmd_line.test_non_interactive_output_buffering` when
+ `PYTHONUNBUFFERED=1` (#128378)
+
+
+The `test_cmd_line.test_non_interactive_output_buffering` test assumes a buffered `stdio`
+without checking the `PYTHONUNBUFFERED` value. Instead of changing the environment
+variable for the duration of the test, it is better to simply skip it.
+
+Upstream-Status: Backport [https://github.com/python/cpython/commit/30268b5d2fbb1a5e6c876f0cdc4cbdb5d93315e6]
+Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+---
+ Lib/test/test_cmd_line.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Lib/test/test_cmd_line.py b/Lib/test/test_cmd_line.py
+index dc420f33c23..ef24866972a 100644
+--- a/Lib/test/test_cmd_line.py
++++ b/Lib/test/test_cmd_line.py
+@@ -334,6 +334,8 @@ class CmdLineTest(unittest.TestCase):
+         self.assertEqual(stdout, expected)
+         self.assertEqual(p.returncode, 0)
+ 
++    @unittest.skipIf(os.environ.get("PYTHONUNBUFFERED", "0") != "0",
++                     "Python stdio buffering is disabled.")
+     def test_non_interactive_output_buffering(self):
+         code = textwrap.dedent("""
+             import sys
