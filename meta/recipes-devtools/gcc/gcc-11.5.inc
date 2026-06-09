@@ -70,6 +70,7 @@ SRC_URI = "\
 	   file://0002-aarch64-add-armv9-a-to-march.patch \
 	   file://0003-aarch64-Enable-FP16-feature-by-default-for-Armv9.patch \
 	   file://0004-arm-add-armv9-a-architecture-to-march.patch \
+	   file://0001-libcody-Make-it-buildable-by-C-11-to-C-26.patch \
 "
 
 SRC_URI[sha256sum] = "a6e21868ead545cf87f0c01f84276e4b5281d672098591c1c896241f09363478"
