@@ -9,6 +9,7 @@ SRC_URI = "${GNOME_MIRROR}/gtk+/${MAJ_VER}/gtk+-${PV}.tar.xz \
            file://CVE-2024-6655.patch \
            file://0001-Use-the-right-type-when-calling-GtkWidget-methods.patch \
            file://0002-tests-Add-GdkEvent-casts-in-testinput.patch \
+           file://0001-Fix-_gtk_get_slowdown.patch \
            "
 SRC_URI[sha256sum] = "dbc69f90ddc821b8d1441f00374dc1da4323a2eafa9078e61edbe5eeefa852ec"
 
