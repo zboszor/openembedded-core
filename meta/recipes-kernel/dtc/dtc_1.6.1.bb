@@ -19,6 +19,8 @@ inherit meson pkgconfig
 
 EXTRA_OEMESON = "-Dpython=disabled -Dvalgrind=disabled"
 
+BUILD_CFLAGS = "-std=gnu17"
+
 PACKAGECONFIG ??= "tools"
 PACKAGECONFIG[tools] = "-Dtools=true,-Dtools=false,flex-native bison-native"
 PACKAGECONFIG[yaml] = "-Dyaml=enabled,-Dyaml=disabled,libyaml"
