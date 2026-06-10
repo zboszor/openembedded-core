@@ -20,6 +20,7 @@ SRC_URI = "git://gitlab.com/procps-ng/procps.git;protocol=https;branch=master \
            file://CVE-2023-4016-2.patch \
            file://0001-top-replaced-one-use-of-fputs-3-with-a-write-2-call.patch \
            file://0001-top-fix-a-fix-for-the-bye_bye-function-merge-127.patch \
+           file://fix-fr-po.patch \
            "
 SRCREV = "19a508ea121c0c4ac6d0224575a036de745eaaf8"
 

@@ -1,0 +1,22 @@
+diff --git a/po/fr.po b/po/fr.po
+index f0149909..e65372bb 100644
+--- a/po/fr.po
++++ b/po/fr.po
+@@ -3311,7 +3311,7 @@ msgid ""
+ "Type 'q' or <Esc> to continue "
+ msgstr ""
+ "Aide pour les commandes interactives~2 - %s\n"
+-"Fenêtre ~1%s~6: ~1Mode cumulatif ~3%s~2.  ~1Système~6: ~1Délai ~3%.1lf secs~2; ~1Mode sûr ~3%s~2.\n"
++"Fenêtre ~1%s~6: ~1Mode cumulatif ~3%s~2.  ~1Système~6: ~1Délai ~3%.1f secs~2; ~1Mode sûr ~3%s~2.\n"
+ "\n"
+ "  Z~5,~1B~5,E,e   Global: «~1Z~2» couleurs; «~1B~2» gras; «~1E~2»/«~1e~2» résumé/échelle mem tâches\n"
+ "  l,t,m,I   Commuter: «~1l~2» charge moy; «~1t~2» stats tâche/cpu; «~1m~2» info mem; «~1I~2» Mode Irix\n"
+@@ -4066,7 +4066,7 @@ msgstr " -v, --version  affiche les informations de version et sort\n"
+ #: watch.c:476
+ #, c-format
+ msgid "Every %.1fs: "
+-msgstr "Toutes les %.1lfs: "
++msgstr "Toutes les %.1fs: "
+ 
+ #: watch.c:477
+ #, c-format
