@@ -113,7 +113,7 @@ PACKAGECONFIG[device-mapper] = "--enable-device-mapper,--disable-device-mapper,l
 # with that. Note that since BUILD_CFLAGS etc are not used by grub2 target
 # builds, it's safe to clear them unconditionally for both target and native.
 BUILD_CPPFLAGS = ""
-BUILD_CFLAGS = ""
+BUILD_CFLAGS = "-std=gnu17"
 BUILD_CXXFLAGS = ""
 BUILD_LDFLAGS = ""
 
