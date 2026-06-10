@@ -10,72 +10,30 @@ LICENSE = "Ruby | BSD-2-Clause | BSD-3-Clause | GPL-2.0-only | ISC | MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=5b8c87559868796979806100db3f3805 \
                     file://BSDL;md5=8b50bc6de8f586dc66790ba11d064d75 \
                     file://GPL;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
-                    file://LEGAL;md5=f260190bc1e92e363f0ee3c0463d4c7c \
+                    file://LEGAL;md5=cb14358b7821c054ae14128885170204 \
                     "
 
-DEPENDS = "zlib openssl libyaml gdbm readline libffi"
+DEPENDS = "zlib openssl libyaml libffi"
 DEPENDS:append:class-target = " ruby-native"
+DEPENDS:append:class-nativesdk = " ruby-native"
 
 SHRT_VER = "${@oe.utils.trim_version("${PV}", 2)}"
 SRC_URI = "http://cache.ruby-lang.org/pub/ruby/${SHRT_VER}/ruby-${PV}.tar.gz \
            file://0001-extmk-fix-cross-compilation-of-external-gems.patch \
            file://0002-Obey-LDFLAGS-for-the-link-of-libruby.patch \
-           file://remove_has_include_macros.patch \
            file://run-ptest \
-           file://0001-template-Makefile.in-do-not-write-host-cross-cc-item.patch \
-           file://0002-template-Makefile.in-filter-out-f-prefix-map.patch \
            file://0003-rdoc-build-reproducible-documentation.patch \
            file://0004-lib-mkmf.rb-sort-list-of-object-files-in-generated-M.patch \
            file://0005-Mark-Gemspec-reproducible-change-fixing-784225-too.patch \
            file://0006-Make-gemspecs-reproducible.patch \
            file://0001-vm_dump.c-Define-REG_S1-and-REG_S2-for-musl-riscv.patch \
-           file://CVE-2023-28756.patch \
-           file://CVE-2023-28755.patch \
-           file://CVE-2023-36617_1.patch \
-           file://CVE-2023-36617_2.patch \
-           file://CVE-2024-27281.patch \
-           file://CVE-2024-27280.patch \
-           file://CVE-2024-27282.patch \
-           file://CVE-2024-49761-0001.patch \
-           file://CVE-2024-49761-0002.patch \
-           file://CVE-2024-49761-0003.patch \
-           file://CVE-2024-49761-0004.patch \
-           file://CVE-2024-49761-0005.patch \
-           file://CVE-2024-49761-0006.patch \
-           file://CVE-2024-49761-0007.patch \
-           file://CVE-2024-49761-0008.patch \
-           file://CVE-2024-49761-0009.patch \
-           file://CVE-2024-41946.patch \
-           file://CVE-2025-27220.patch \
-           file://CVE-2025-27219.patch \
-           file://CVE-2024-43398-0001.patch \
-           file://CVE-2024-43398-0002.patch \
-           file://CVE-2024-43398-0003.patch \
-           file://CVE-2025-27221-0001.patch \
-           file://CVE-2025-27221-0002.patch \
-           file://CVE-2024-35176.patch \
-           file://CVE-2024-39908-0001.patch \
-           file://CVE-2024-39908-0002.patch \
-           file://CVE-2024-39908-0003.patch \
-           file://CVE-2024-39908-0004.patch \
-           file://CVE-2024-39908-0005.patch \
-           file://CVE-2024-39908-0006.patch \
-           file://CVE-2024-39908-0007.patch \
-           file://CVE-2024-39908-0008.patch \
-           file://CVE-2024-39908-0009.patch \
-           file://CVE-2024-39908-0010.patch \
-           file://CVE-2024-39908-0011.patch \
-           file://CVE-2024-39908-0012.patch \
-           file://CVE-2024-41123-0001.patch \
-           file://CVE-2024-41123-0002.patch \
-           file://CVE-2024-41123-0003.patch \
-           file://CVE-2024-41123-0004.patch \
-           file://CVE-2024-41123-0005.patch \
+           file://0007-Skip-test_rm_r_no_permissions-test-under-root.patch \
            "
 UPSTREAM_CHECK_URI = "https://www.ruby-lang.org/en/downloads/"
 
 inherit autotools ptest pkgconfig
 
+EXTRA_AUTORECONF += "--exclude=aclocal"
 
 # This snippet lets compiled extensions which rely on external libraries,
 # such as zlib, compile properly.  If we don't do this, then when extmk.rb
@@ -91,7 +49,7 @@ do_configure:prepend() {
 
 DEPENDS:append:libc-musl = " libucontext"
 
-SRC_URI[sha256sum] = "5ea498a35f4cd15875200a52dde42b6eb179e1264e17d78732c3a57cd1c6ab9e"
+SRC_URI[sha256sum] = "1d88d8a27b442fdde4aa06dc99e86b0bbf0b288963d8433112dd5fac798fd5ee"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG += "${@bb.utils.filter('DISTRO_FEATURES', 'ipv6', d)}"
@@ -122,8 +80,7 @@ EXTRA_OECONF:append:libc-musl = "\
 PARALLEL_MAKEINST = ""
 
 do_install:append:class-target () {
-    # Find out rbconfig.rb from .installed.list
-    rbconfig_rb=`grep rbconfig.rb ${B}/.installed.list`
+    rbconfig_rb=`find ${D} -name rbconfig.rb`
     # Remove build host directories
     sed -i -e 's:--sysroot=${STAGING_DIR_TARGET}::g' \
            -e s:'--with-libtool-sysroot=${STAGING_DIR_TARGET}'::g \
@@ -132,7 +89,7 @@ do_install:append:class-target () {
            -e 's:${RECIPE_SYSROOT_NATIVE}::g' \
            -e 's:${RECIPE_SYSROOT}::g' \
            -e 's:${BASE_WORKDIR}/${MULTIMACH_TARGET_SYS}::g' \
-        ${D}$rbconfig_rb
+        $rbconfig_rb
 
     sed -i -e 's|${DEBUG_PREFIX_MAP}||g' \
         ${D}${libdir}/pkgconfig/*.pc
@@ -143,11 +100,13 @@ do_install:append:class-target () {
 
 do_install_ptest () {
     cp -rf ${S}/test ${D}${PTEST_PATH}/
-
+    install -D ${S}/tool/test/init.rb ${D}${PTEST_PATH}/tool/test/init.rb
     install -D ${S}/tool/test/runner.rb ${D}${PTEST_PATH}/tool/test/runner.rb
     cp -r ${S}/tool/lib ${D}${PTEST_PATH}/tool/
     mkdir -p ${D}${PTEST_PATH}/lib
     cp -r ${S}/lib/did_you_mean ${S}/lib/rdoc ${D}${PTEST_PATH}/lib
+    cp ${D}${libdir}/ruby/${SHRT_VER}.0/rdoc.rb ${D}${PTEST_PATH}/lib
+    cp ${D}${libdir}/ruby/${SHRT_VER}.0/did_you_mean.rb ${D}${PTEST_PATH}/lib    
 
     # install test-binaries
     # These .so files have sporadic reproducibility fails as seen here:
@@ -182,4 +141,4 @@ FILES:${PN}-ptest:append:class-target = "\
     ${libdir}/ruby/${SHRT_VER}.0/*/-test- \
 "
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
