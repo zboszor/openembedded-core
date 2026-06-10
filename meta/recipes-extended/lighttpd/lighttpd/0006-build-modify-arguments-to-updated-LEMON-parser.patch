@@ -1,0 +1,67 @@
+From 65d20cbcab28110b24946e47f051f6e691847489 Mon Sep 17 00:00:00 2001
+From: Glenn Strauss <gstrauss@gluelogic.com>
+Date: Mon, 9 Jan 2023 00:37:26 -0500
+Subject: [PATCH 6/6] [build] modify arguments to updated LEMON parser
+
+---
+ scripts/cmake/LighttpdMacros.cmake | 2 +-
+ src/Makefile.am                    | 2 +-
+ src/SConscript                     | 2 +-
+ src/meson.build                    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/cmake/LighttpdMacros.cmake b/scripts/cmake/LighttpdMacros.cmake
+index 69768098..4680d10e 100644
+--- a/scripts/cmake/LighttpdMacros.cmake
++++ b/scripts/cmake/LighttpdMacros.cmake
+@@ -26,7 +26,7 @@ macro(LEMON_PARSER SRCFILE)
+ 	get_filename_component(SRCBASE ${SRCFILE} NAME_WE)
+ 	add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${SRCBASE}.c ${CMAKE_CURRENT_BINARY_DIR}/${SRCBASE}.h
+ 		COMMAND ${CMAKE_CURRENT_BINARY_DIR}/lemon
+-		ARGS -q ${CMAKE_CURRENT_SOURCE_DIR}/${SRCFILE} ${CMAKE_CURRENT_SOURCE_DIR}/lempar.c
++		ARGS -q -d${CMAKE_CURRENT_BINARY_DIR} -T${CMAKE_CURRENT_SOURCE_DIR}/lempar.c ${CMAKE_CURRENT_SOURCE_DIR}/${SRCFILE}
+ 		DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/lemon ${CMAKE_CURRENT_SOURCE_DIR}/${SRCFILE} ${CMAKE_CURRENT_SOURCE_DIR}/lempar.c
+ 		COMMENT "Generating ${SRCBASE}.c from ${SRCFILE}"
+ 	)
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 84c8b59d..3b35e753 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -40,7 +40,7 @@ versionstamp:
+ configparser.h: configparser.c
+ configparser.c: $(srcdir)/configparser.y $(srcdir)/lempar.c lemon$(BUILD_EXEEXT)
+ 	rm -f configparser.h
+-	$(LEMON) -q $(srcdir)/configparser.y $(srcdir)/lempar.c
++	$(LEMON) -q -T$(srcdir)/lempar.c $(srcdir)/configparser.y
+ 
+ parsers: configparser.c
+ 
+diff --git a/src/SConscript b/src/SConscript
+index 25041d46..c5ad9067 100644
+--- a/src/SConscript
++++ b/src/SConscript
+@@ -89,7 +89,7 @@ src = Split("server.c response.c connections.c h2.c reqpool.c \
+ lemon = env.Program('lemon', 'lemon.c', LIBS = GatherLibs(env))
+ 
+ def Lemon(env, input):
+-	parser = env.Command([input.replace('.y', '.c'),input.replace('.y', '.h')], input, '(cd sconsbuild/build; ../../' + lemon[0].path + ' -q ../../$SOURCE ../../src/lempar.c)')
++	parser = env.Command([input.replace('.y', '.c'),input.replace('.y', '.h')], input, lemon[0].path + ' -q -dsconsbuild/build -Tsrc/lempar.c $SOURCE')
+ 	env.Depends(parser, lemon)
+ 
+ configparser = Lemon(env, 'configparser.y')
+diff --git a/src/meson.build b/src/meson.build
+index 890bbfd5..a43a0560 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -814,7 +814,7 @@ lemon = executable('lemon',
+ configparser = custom_target('configparser',
+ 	input:  ['configparser.y', 'lempar.c'],
+ 	output: ['configparser.c', 'configparser.h'],
+-	command: [lemon, '-q', 'o=@OUTDIR@', '@INPUT0@', '@INPUT1@'],
++	command: [lemon, '-q', '-d@OUTDIR@', '-T@INPUT1@', '@INPUT0@'],
+ )
+ 
+ common_cflags = defs + [
+-- 
+2.54.0
+
