@@ -7,6 +7,7 @@ HOMEPAGE = "https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.gi
 SRCREV = "ee97fe5fb77c737df0f77d92ab0d92edd3a11be6"
 SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git;branch=master \
            file://0001-fsck-main.c-add-missing-include.patch \
+           file://0001-Fix-C23-const-usage-of-strrchr.patch \
            "
 
 UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>(\d+(\.\d+)+))"
