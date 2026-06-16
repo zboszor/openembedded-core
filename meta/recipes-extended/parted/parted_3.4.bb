@@ -7,6 +7,7 @@ SECTION = "console/tools"
 DEPENDS = "ncurses util-linux virtual/libiconv"
 
 SRC_URI = "${GNU_MIRROR}/parted/parted-${PV}.tar.xz \
+           file://0001-bug-74444-PATCH-parted-fix-do_version-declaration.patch \
            file://fix-doc-mandir.patch \
            file://run-ptest \
            file://check-vfat.patch \
