@@ -1,0 +1,30 @@
+From d2e465b35d1dafe34b9b872f1ed06982d8975ba3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?=
+ <zboszor@gmail.com>
+Date: Tue, 16 Jun 2026 06:38:31 +0200
+Subject: [PATCH] Fix C23 const usage of strrchr
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+---
+ dump/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dump/main.c b/dump/main.c
+index b7560ec..1c868e7 100644
+--- a/dump/main.c
++++ b/dump/main.c
+@@ -192,7 +192,7 @@ static int erofs_get_occupied_size(struct erofs_inode *inode,
+ 
+ static int erofs_getfile_extension(const char *filename)
+ {
+-	char *postfix = strrchr(filename, '.');
++	const char *postfix = strrchr(filename, '.');
+ 	int type = 0;
+ 
+ 	if (!postfix)
+-- 
+2.54.0
+
