@@ -1,0 +1,171 @@
+From 5233c37c2fad21519e9f6144e5322b29f4b5fe79 Mon Sep 17 00:00:00 2001
+From: Mark Wielaard <mark@klomp.org>
+Date: Sat, 2 May 2026 18:56:52 +0200
+Subject: [PATCH 1/2] ld: Fix calls to strchr that discard or use wrong const
+ qualifiers
+
+* ld/emultempl/pe.em (pe_fixup_stdcalls): Make at a const char *.
+	(gldEMULATION_NAME_after_open): Make pnt a const char *.
+	(gldEMULATION_NAME_place_orphan): Make dollar a const char *.
+	* ld/emultempl/pep.em (pep_fixup_stdcalls): Make at a
+	const char *. Introduce at2 as non-const char *.
+	(gldEMULATION_NAME_after_open): Make pnt a const char *.
+	(gldEMULATION_NAME_place_orphan): Make dollar a const char *.
+	* ld/emultempl/spuelf.em (spu_elf_load_ovl_mgr): Make p a
+	const char *. Introduce np as char *.
+	* ld/ldelf.c (ldelf_search_needed): Call strchr on freeme, so
+	slash is non-const, then assign freeme to replacement.
+
+Upstream-Status: Backport
+---
+ ld/emultempl/beos.em   |  2 +-
+ ld/emultempl/pe.em     |  6 +++---
+ ld/emultempl/pep.em    | 13 +++++++------
+ ld/emultempl/spuelf.em | 10 +++++-----
+ ld/ldelf.c             |  6 +++---
+ 5 files changed, 19 insertions(+), 18 deletions(-)
+
+diff --git a/ld/emultempl/beos.em b/ld/emultempl/beos.em
+index 1f3b67b6372..acea4334503 100644
+--- a/ld/emultempl/beos.em
++++ b/ld/emultempl/beos.em
+@@ -577,7 +577,7 @@ sort_sections (lang_statement_union_type *s)
+ 		 the linker handle the rest).  */
+ 	      if (sec->spec.name != NULL)
+ 		{
+-		  char *q = strchr (sec->spec.name, '\$');
++		  const char *q = strchr (sec->spec.name, '\$');
+ 
+ 		  if (q != NULL
+ 		      && (q[1] == '\0'
+diff --git a/ld/emultempl/pe.em b/ld/emultempl/pe.em
+index 8a3c5600cf9..f4f7f5ee980 100644
+--- a/ld/emultempl/pe.em
++++ b/ld/emultempl/pe.em
+@@ -1194,7 +1194,7 @@ pe_fixup_stdcalls (void)
+     if (undef->type == bfd_link_hash_undefined)
+       {
+ 	const char * name = undef->root.string;
+-	char * at;
++	const char * at;
+ 	int lead_at = (*name == '@');
+ 
+ 	if (lead_at)
+@@ -1735,7 +1735,7 @@ gld${EMULATION_NAME}_after_open (void)
+       {
+ 	if (is->the_bfd->my_archive)
+ 	  {
+-	    char *pnt;
++	    const char *pnt;
+ 
+ 	    /* Microsoft import libraries may contain archive members for
+ 	       one or more DLLs, together with static object files.
+@@ -2109,7 +2109,7 @@ gld${EMULATION_NAME}_place_orphan (asection *s,
+ 				   int constraint)
+ {
+   const char *orig_secname = secname;
+-  char *dollar = NULL;
++  const char *dollar = NULL;
+   lang_output_section_statement_type *os;
+   lang_statement_list_type add_child;
+   lang_output_section_statement_type *match_by_name = NULL;
+diff --git a/ld/emultempl/pep.em b/ld/emultempl/pep.em
+index eabb9c3b4f7..de35d5a51fa 100644
+--- a/ld/emultempl/pep.em
++++ b/ld/emultempl/pep.em
+@@ -1123,7 +1123,7 @@ pep_fixup_stdcalls (void)
+   for (undef = link_info.hash->undefs; undef; undef=undef->u.undef.next)
+     if (undef->type == bfd_link_hash_undefined)
+       {
+-	char* at = strchr (undef->root.string, '@');
++	const char* at = strchr (undef->root.string, '@');
+ 	int lead_at = (*undef->root.string == '@');
+ 	if (lead_at)
+ 	  at = strchr (undef->root.string + 1, '@');
+@@ -1132,12 +1132,13 @@ pep_fixup_stdcalls (void)
+ 	    /* The symbol is a stdcall symbol, so let's look for a
+ 	       cdecl symbol with the same name and resolve to that.  */
+ 	    char *cname = xstrdup (undef->root.string);
++	    char *at2;
+ 
+ 	    if (lead_at)
+ 	      *cname = '_';
+-	    at = strchr (cname, '@');
+-	    if (at)
+-	      *at = 0;
++	    at2 = strchr (cname, '@');
++	    if (at2)
++	      *at2 = 0;
+ 	    sym = bfd_link_hash_lookup (link_info.hash, cname, 0, 0, 1);
+ 
+ 	    if (sym && sym->type == bfd_link_hash_defined)
+@@ -1714,7 +1715,7 @@ gld${EMULATION_NAME}_after_open (void)
+       {
+ 	if (is->the_bfd->my_archive)
+ 	  {
+-	    char *pnt;
++	    const char *pnt;
+ 
+ 	    /* Microsoft import libraries may contain archive members for
+ 	       one or more DLLs, together with static object files.
+@@ -1939,7 +1940,7 @@ gld${EMULATION_NAME}_place_orphan (asection *s,
+ 				    int constraint)
+ {
+   const char *orig_secname = secname;
+-  char *dollar = NULL;
++  const char *dollar = NULL;
+   lang_output_section_statement_type *os;
+   lang_statement_list_type add_child;
+   lang_output_section_statement_type *match_by_name = NULL;
+diff --git a/ld/emultempl/spuelf.em b/ld/emultempl/spuelf.em
+index 0a959a95737..721e45dd7a1 100644
+--- a/ld/emultempl/spuelf.em
++++ b/ld/emultempl/spuelf.em
+@@ -235,14 +235,14 @@ spu_elf_load_ovl_mgr (void)
+ 		    if (!lang_output_section_find (oname))
+ 		      {
+ 			lang_output_section_statement_type *os = NULL;
+-			char *p = strchr (oname + 1, '.');
++			const char *p = strchr (oname + 1, '.');
+ 			if (p != NULL)
+ 			  {
+ 			    size_t len = p - oname;
+-			    p = memcpy (xmalloc (len + 1), oname, len);
+-			    p[len] = '\0';
+-			    os = lang_output_section_find (p);
+-			    free (p);
++			    char *np = memcpy (xmalloc (len + 1), oname, len);
++			    np[len] = '\0';
++			    os = lang_output_section_find (np);
++			    free (np);
+ 			  }
+ 			if (os != NULL)
+ 			  oname = os->name;
+diff --git a/ld/ldelf.c b/ld/ldelf.c
+index eff6693e052..59e52484c87 100644
+--- a/ld/ldelf.c
++++ b/ld/ldelf.c
+@@ -530,9 +530,9 @@ ldelf_search_needed (const char *path, struct dt_needed *n, int force,
+ 			  sprintf (freeme, "%s/%s", current_dir, replacement);
+ 			}
+ 
+-		      replacement = freeme;
+-		      if ((slash = strrchr (replacement, '/')) != NULL)
++		      if ((slash = strrchr (freeme, '/')) != NULL)
+ 			* slash = 0;
++		      replacement = freeme;
+ 		    }
+ 		}
+ 	      break;
+@@ -787,7 +787,7 @@ ldelf_parse_ld_so_conf_include (struct ldelf_ld_so_conf *info,
+ 
+   if (pattern[0] != '/')
+     {
+-      char *p = strrchr (filename, '/');
++      const char *p = strrchr (filename, '/');
+       size_t patlen = strlen (pattern) + 1;
+ 
+       newp = xmalloc (p - filename + 1 + patlen);
+-- 
+2.55.0
+

@@ -36,5 +36,7 @@ SRC_URI = "\
      file://0016-CVE-2023-25586.patch \
      file://0001-Fix-an-illegal-memory-access-when-an-accessing-a-zer.patch \
      file://0017-CVE-2023-39128.patch \
+     file://0001-ld-Fix-calls-to-strchr-that-discard-or-use-wrong-con.patch \
+     file://0002-gprofng-protect-against-standard-library-macros.patch \
 "
 S  = "${WORKDIR}/git"
