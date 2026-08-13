@@ -1,0 +1,65 @@
+From e9e191a793ebcc9ef33e8c63532a0da3d2e22449 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?=
+ <zboszor@gmail.com>
+Date: Tue, 11 Aug 2026 06:33:02 +0200
+Subject: [PATCH 2/2] Move INCLUDE_MEMORY earlier in and add INCLUDE_SSTREAM to
+ gcc/system.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+And use the latter in gcc/c/c-decl.cc to fix a build error.
+
+Upstream-Status: Backport
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+---
+ gcc/c/c-decl.cc |  1 +
+ gcc/system.h    | 13 +++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/gcc/c/c-decl.cc b/gcc/c/c-decl.cc
+index 619a2090937..9f28e9a7bb3 100644
+--- a/gcc/c/c-decl.cc
++++ b/gcc/c/c-decl.cc
+@@ -25,6 +25,7 @@ along with GCC; see the file COPYING3.  If not see
+    line numbers.  For example, the CONST_DECLs for enum values.  */
+ 
+ #include "config.h"
++#define INCLUDE_SSTREAM
+ #define INCLUDE_STRING
+ #define INCLUDE_MEMORY
+ #include "system.h"
+diff --git a/gcc/system.h b/gcc/system.h
+index 38733dd81a6..7edf1b0bed4 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -222,6 +222,15 @@ extern int fprintf_unlocked (FILE *, const char *, ...);
+ #ifdef INCLUDE_FUNCTIONAL
+ # include <functional>
+ #endif
++#ifdef INCLUDE_SSTREAM
++# include <sstream>
++#endif
++/* Some of the headers included by <memory> can use "abort" within a
++   namespace, e.g. "_VSTD::abort();", which fails after we use the
++   preprocessor to redefine "abort" as "fancy_abort" below.  */
++#ifdef INCLUDE_MEMORY
++# include <memory>
++#endif
+ # include <cstring>
+ # include <initializer_list>
+ # include <new>
+@@ -737,10 +746,6 @@ extern int vsnprintf (char *, size_t, const char *, va_list);
+    namespace, e.g. "_VSTD::abort();", which fails after we use the
+    preprocessor to redefine "abort" as "fancy_abort" below.  */
+ 
+-#ifdef INCLUDE_MEMORY
+-# include <memory>
+-#endif
+-
+ #ifdef INCLUDE_MALLOC_H
+ #if defined(HAVE_MALLINFO) || defined(HAVE_MALLINFO2)
+ #include <malloc.h>
+-- 
+2.55.0
+
