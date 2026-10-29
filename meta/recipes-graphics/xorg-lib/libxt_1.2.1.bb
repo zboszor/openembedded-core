@@ -22,7 +22,10 @@ PE = "1"
 
 XORG_PN = "libXt"
 
-SRC_URI += "file://libxt_fix_for_x32.patch"
+SRC_URI += " \
+    file://libxt_fix_for_x32.patch \
+    file://0001-issue-20-c23-boolean-conflict.patch \
+"
 
 SRC_URI[sha256sum] = "679cc08f1646dbd27f5e48ffe8dd49406102937109130caab02ca32c083a3d60"
 

@@ -1,0 +1,30 @@
+From 56875344b2a62845b8a494830bfb0a5f6ed2d3d6 Mon Sep 17 00:00:00 2001
+From: "Thomas E. Dickey" <dickey@invisible-island.net>
+Date: Sun, 12 Nov 2023 05:33:05 -0500
+Subject: [PATCH] issue #20: c23 boolean conflict
+
+Signed-off-by: Thomas E. Dickey <dickey@invisible-island.net>
+---
+ src/Shell.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/Shell.c b/src/Shell.c
+index 027448b..6c36cd4 100644
+--- a/src/Shell.c
++++ b/src/Shell.c
+@@ -1006,10 +1006,10 @@ _XtShellColormap(Widget widget, int closure, XrmValue *value)
+ static void
+ _XtShellAncestorSensitive(Widget widget, int closure, XrmValue *value)
+ {
+-    static Boolean true = True;
++    static Boolean true_value = True;
+ 
+     if (widget->core.parent == NULL)
+-        value->addr = (XPointer) (&true);
++        value->addr = (XPointer) (&true_value);
+     else
+         _XtCopyFromParent(widget, closure, value);
+ }
+-- 
+2.56.0
+
