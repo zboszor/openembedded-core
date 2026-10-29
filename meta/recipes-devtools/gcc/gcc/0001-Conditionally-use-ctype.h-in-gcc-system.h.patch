@@ -1,0 +1,571 @@
+From 265283c0146e134a21d06b0ae0e5ffaff3431e70 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?=
+ <zboszor@gmail.com>
+Date: Wed, 10 Jun 2026 13:01:27 +0200
+Subject: [PATCH] Conditionally use <ctype.h> in gcc/system.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
+Upstream-Status: Inappropriate [cross compiler specific]
+---
+ gcc/c/c-decl.c            |  7 +--
+ gcc/cp/mapper-client.cc   |  5 ++-
+ gcc/cp/mapper-resolver.cc |  1 +
+ gcc/cp/module.cc          | 93 ++++++++++++++++++++-------------------
+ gcc/system.h              | 13 ++++--
+ 5 files changed, 65 insertions(+), 54 deletions(-)
+
+diff --git a/gcc/c/c-decl.c b/gcc/c/c-decl.c
+index 2b567ce7c88..a302c5ffdc1 100644
+--- a/gcc/c/c-decl.c
++++ b/gcc/c/c-decl.c
+@@ -27,6 +27,7 @@ along with GCC; see the file COPYING3.  If not see
+ #include "config.h"
+ #define INCLUDE_STRING
+ #define INCLUDE_UNIQUE_PTR
++#define INCLUDE_CTYPE
+ #include "system.h"
+ #include "coretypes.h"
+ #include "target.h"
+@@ -2582,7 +2583,7 @@ merge_decls (tree newdecl, tree olddecl, tree newtype, tree oldtype)
+ 			= TYPE_NEXT_VARIANT (TYPE_NEXT_VARIANT (t));
+ 		      break;
+ 		    }
+-	    }	    
++	    }
+ 	  else
+ 	    for (tree t = TYPE_MAIN_VARIANT (remove); ;
+ 		 t = TYPE_NEXT_VARIANT (t))
+@@ -10179,7 +10180,7 @@ void
+ finish_function (location_t end_loc)
+ {
+   tree fndecl = current_function_decl;
+-  
++
+   if (c_dialect_objc ())
+     objc_finish_function ();
+ 
+@@ -12178,7 +12179,7 @@ collect_source_refs (void)
+   unsigned i;
+ 
+   FOR_EACH_VEC_ELT (*all_translation_units, i, t)
+-    { 
++    {
+       decls = DECL_INITIAL (t);
+       for (decl = BLOCK_VARS (decls); decl; decl = TREE_CHAIN (decl))
+ 	if (!DECL_IS_UNDECLARED_BUILTIN (decl))
+diff --git a/gcc/cp/mapper-client.cc b/gcc/cp/mapper-client.cc
+index b9e02168d55..65fa22cdf6b 100644
+--- a/gcc/cp/mapper-client.cc
++++ b/gcc/cp/mapper-client.cc
+@@ -27,6 +27,7 @@ along with GCC; see the file COPYING3.  If not see
+ #define INCLUDE_STRING
+ #define INCLUDE_VECTOR
+ #define INCLUDE_MAP
++#define INCLUDE_CTYPE
+ #include "system.h"
+ 
+ #include "line-map.h"
+@@ -260,7 +261,7 @@ module_client::open_module_client (location_t loc, const char *o,
+ 			  c = new module_client (fd, fd);
+ 		      }
+ 		  }
+-		
++
+ 	      }
+ 	      break;
+ 	    }
+@@ -286,7 +287,7 @@ module_client::open_module_client (location_t loc, const char *o,
+ 		  line = l;
+ 		errmsg = "reading";
+ 	      }
+-	      
++
+ 	    close (fd);
+ 	  }
+ 	}
+diff --git a/gcc/cp/mapper-resolver.cc b/gcc/cp/mapper-resolver.cc
+index db443fb4948..adcb66bb6d5 100644
+--- a/gcc/cp/mapper-resolver.cc
++++ b/gcc/cp/mapper-resolver.cc
+@@ -25,6 +25,7 @@ along with GCC; see the file COPYING3.  If not see
+ #define INCLUDE_VECTOR
+ #define INCLUDE_ALGORITHM
+ #define INCLUDE_MAP
++#define INCLUDE_CTYPE
+ #include "system.h"
+ 
+ // We don't want or need to be aware of networking
+diff --git a/gcc/cp/module.cc b/gcc/cp/module.cc
+index 6cb926c044a..f68717de886 100644
+--- a/gcc/cp/module.cc
++++ b/gcc/cp/module.cc
+@@ -204,6 +204,7 @@ Classes used:
+ #include "config.h"
+ #define INCLUDE_STRING
+ #define INCLUDE_VECTOR
++#define INCLUDE_CTYPE
+ #include "system.h"
+ #include "coretypes.h"
+ #include "cp-tree.h"
+@@ -449,7 +450,7 @@ public:
+   bytes ()
+     :parent (), bit_val (0), bit_pos (0)
+   {}
+-  ~bytes () 
++  ~bytes ()
+   {
+   }
+ 
+@@ -605,7 +606,7 @@ class bytes_out : public bytes {
+ 
+ public:
+   allocator *memory;	/* Obtainer of memory.  */
+-  
++
+ public:
+   bytes_out (allocator *memory)
+     : parent (), memory (memory)
+@@ -636,7 +637,7 @@ public:
+     if (unsigned pad = pos & (boundary - 1))
+       write (boundary - pad);
+   }
+-  
++
+ public:
+   char *write (unsigned count, bool exact = false)
+   {
+@@ -1191,7 +1192,7 @@ protected:
+     uint32_t entry;	/* 0 */
+     uint32_t phoff;	/* 0 */
+     uint32_t shoff;	/* Section Header Offset in file */
+-    uint32_t flags; 
++    uint32_t flags;
+     uint16_t ehsize;	/* ELROND Header SIZE -- sizeof (header) */
+     uint16_t phentsize; /* 0 */
+     uint16_t phnum;	/* 0 */
+@@ -1665,7 +1666,7 @@ elf_in::read (data *data, unsigned pos, unsigned length)
+     }
+ #endif
+   grow (*data, length);
+-#if MAPPED_READING  
++#if MAPPED_READING
+   data->buffer = hdr.buffer + pos;
+ #else
+   if (::read (fd, data->buffer, data->size) != ssize_t (length))
+@@ -2266,7 +2267,7 @@ public:
+     EK_USING,		/* A using declaration (at namespace scope).  */
+     EK_NAMESPACE,	/* A namespace.  */
+     EK_REDIRECT,	/* Redirect to a template_decl.  */
+-    EK_EXPLICIT_HWM,  
++    EK_EXPLICIT_HWM,
+     EK_BINDING = EK_EXPLICIT_HWM, /* Implicitly encoded.  */
+     EK_FOR_BINDING,	/* A decl being inserted for a binding.  */
+     EK_INNER_DECL,	/* A decl defined outside of it's imported
+@@ -2278,7 +2279,7 @@ public:
+ 
+ private:
+   /* Placement of bit fields in discriminator.  */
+-  enum disc_bits 
++  enum disc_bits
+   {
+     DB_ZERO_BIT, /* Set to disambiguate identifier from flags  */
+     DB_SPECIAL_BIT, /* First dep slot is special.  */
+@@ -2346,7 +2347,7 @@ private:
+     gcc_checking_assert (I < 2 || !is_binding ());
+     return bool ((discriminator >> I) & 1);
+   }
+-  
++
+ public:
+   bool is_binding () const
+   {
+@@ -2558,7 +2559,7 @@ public:
+     void add_partial_entities (vec<tree, va_gc> *);
+     void add_class_entities (vec<tree, va_gc> *);
+ 
+-  public:    
++  public:
+     void find_dependencies (module_state *);
+     bool finalize_dependencies ();
+     vec<depset *> connect ();
+@@ -2576,7 +2577,7 @@ public:
+       result.create (size);
+       stack.create (50);
+     }
+-    ~tarjan () 
++    ~tarjan ()
+     {
+       gcc_assert (!stack.length ());
+       stack.release ();
+@@ -2604,7 +2605,7 @@ const char *
+ depset::entity_kind_name () const
+ {
+   /* Same order as entity_kind.  */
+-  static const char *const names[] = 
++  static const char *const names[] =
+     {"decl", "specialization", "partial", "using",
+      "namespace", "redirect", "binding"};
+   entity_kind kind = get_entity_kind ();
+@@ -2765,7 +2766,7 @@ enum merge_kind
+   MK_local_friend, /* Found by CTX, index.  */
+ 
+   MK_indirect_lwm = MK_enum,
+-  
++
+   /* Template specialization kinds below. These are all found via
+      primary template and specialization args.  */
+   MK_template_mask = 0x10,  /* A template specialization.  */
+@@ -2908,7 +2909,7 @@ public:
+ public:
+   /* Serialize various definitions. */
+   bool read_definition (tree decl);
+-  
++
+ private:
+   bool is_matching_decl (tree existing, tree decl, bool is_typedef);
+   static bool install_implicit_member (tree decl);
+@@ -3008,7 +3009,7 @@ public:
+   void end ();
+ 
+ public:
+-  enum tags 
++  enum tags
+   {
+     tag_backref = -1,	/* Upper bound on the backrefs.  */
+     tag_value = 0,	/* Write by value.  */
+@@ -3862,7 +3863,7 @@ get_clone_target (tree decl)
+   if (TREE_CODE (decl) == TEMPLATE_DECL)
+     {
+       tree res_orig = DECL_CLONED_FUNCTION (DECL_TEMPLATE_RESULT (decl));
+-      
++
+       target = DECL_TI_TEMPLATE (res_orig);
+     }
+   else
+@@ -4548,7 +4549,7 @@ set_cmi_repo (const char *r)
+   size_t len = strlen (r);
+   cmi_repo = XNEWVEC (char, len + 1);
+   memcpy (cmi_repo, r, len + 1);
+-  
++
+   if (len > 1 && IS_DIR_SEPARATOR (cmi_repo[len-1]))
+     len--;
+   if (len == 1 && cmi_repo[0] == '.')
+@@ -5486,7 +5487,7 @@ trees_in::core_bools (tree t)
+       RB (t->function_decl.disregard_inline_limits);
+       RB (t->function_decl.pure_flag);
+       RB (t->function_decl.looping_const_or_pure_flag);
+-      
++
+       RB (t->function_decl.has_debug_args_flag);
+       RB (t->function_decl.versioned_function);
+ 
+@@ -6190,7 +6191,7 @@ trees_out::core_vals (tree t)
+       WT (((lang_tree_node *)t)->overload.function);
+       WT (t->common.chain);
+       break;
+-      
++
+     case PTRMEM_CST:
+       WT (((lang_tree_node *)t)->ptrmem.member);
+       break;
+@@ -6250,7 +6251,7 @@ trees_out::core_vals (tree t)
+       /* TEMPLATE_PARM_DESCENDANTS (AKA TREE_CHAIN) is an internal
+ 	 cache, do not stream.  */
+       break;
+-      
++
+     case TRAIT_EXPR:
+       WT (((lang_tree_node *)t)->trait_expression.type1);
+       WT (((lang_tree_node *)t)->trait_expression.type2);
+@@ -6510,7 +6511,7 @@ trees_in::core_vals (tree t)
+       RU (t->label_decl.label_decl_uid);
+       RU (t->label_decl.eh_landing_pad_nr);
+       break;
+-  
++
+     case FUNCTION_DECL:
+       {
+ 	unsigned bltin = u ();
+@@ -7233,7 +7234,7 @@ bool
+ trees_in::add_indirects (tree decl)
+ {
+   unsigned count = 0;
+-	    
++
+   tree inner = decl;
+   if (TREE_CODE (inner) == TEMPLATE_DECL)
+     {
+@@ -7421,7 +7422,7 @@ void
+ trees_out::install_entity (tree decl, depset *dep)
+ {
+   gcc_checking_assert (streaming_p ());
+-  
++
+   /* Write the entity index, so we can insert it as soon as we
+      know this is new.  */
+   u (dep ? dep->cluster + 1 : 0);
+@@ -7788,7 +7789,7 @@ trees_in::decl_value ()
+ 
+   unsigned saved_unused = unused;
+   unused = 0;
+-  
++
+   merge_kind mk = merge_kind (mk_u);
+ 
+   tree decl = start ();
+@@ -7806,7 +7807,7 @@ trees_in::decl_value ()
+       if (!tree_node_bools (decl))
+ 	decl = NULL_TREE;
+     }
+-  
++
+   /* Insert into map.  */
+   tag = insert (decl);
+   if (decl)
+@@ -8988,7 +8989,7 @@ trees_out::tree_node (tree t)
+       if (streaming_p ())
+ 	{
+ 	  /* We know the ordering of the 4 id tags.  */
+-	  static const char *const kinds[] = 
++	  static const char *const kinds[] =
+ 	    {"", "conv_op ", "anon ", "lambda "};
+ 	  dump (dumper::TREE)
+ 	    && dump ("Written:%d %sidentifier:%N", tag,
+@@ -10842,7 +10843,7 @@ trees_in::key_mergeable (int tag, merge_kind mk, tree decl, tree inner,
+ 
+ 			    existing = check_mergeable_decl
+ 			      (mk, inner, existing, key);
+-			    
++
+ 			    if (!existing && DECL_ALIAS_TEMPLATE_P (decl))
+ 			      {} // FIXME: Insert into specialization
+ 			    // tables, we'll need the arguments for that!
+@@ -11465,7 +11466,7 @@ trees_in::read_function_def (tree decl, tree maybe_template)
+     {
+       // FIXME:QOI Check matching defn
+     }
+-  
++
+   return true;
+ }
+ 
+@@ -12007,7 +12008,7 @@ trees_in::read_class_def (tree defn, tree maybe_template)
+ 		 friend_decls; friend_decls = TREE_CHAIN (friend_decls))
+ 	      {
+ 		tree f = TREE_VALUE (friend_decls);
+-		
++
+ 		DECL_BEFRIENDING_CLASSES (f)
+ 		  = tree_cons (NULL_TREE, type, DECL_BEFRIENDING_CLASSES (f));
+ 		dump () && dump ("Class %N befriending %C:%N",
+@@ -12106,7 +12107,7 @@ trees_in::read_enum_def (tree defn, tree maybe_template)
+ 
+ 	  if (DECL_NAME (known_decl) != DECL_NAME (new_decl))
+ 	    goto bad;
+-	      
++
+ 	  new_decl = maybe_duplicate (new_decl);
+ 
+ 	  if (!cp_tree_equal (DECL_INITIAL (known_decl),
+@@ -13208,7 +13209,7 @@ binding_cmp (const void *a_, const void *b_)
+     a_export = DECL_MODULE_EXPORT_P (TREE_CODE (a_ent) == CONST_DECL
+ 				     ? TYPE_NAME (TREE_TYPE (a_ent))
+ 				     : STRIP_TEMPLATE (a_ent));
+-  
++
+   bool b_using = b->get_entity_kind () == depset::EK_USING;
+   bool b_export;
+   if (b_using)
+@@ -13353,7 +13354,7 @@ depset_cmp (const void *a_, const void *b_)
+   if  (a_kind != b_kind)
+     /* Different entity kinds, order by that.  */
+     return a_kind < b_kind ? -1 : +1;
+-  
++
+   tree a_decl = a->get_entity ();
+   tree b_decl = b->get_entity ();
+   if (a_kind == depset::EK_USING)
+@@ -13585,7 +13586,7 @@ loc_spans::init (const line_maps *lmaps, const line_map_ordinary *map)
+ 	     interval.ordinary.first, interval.ordinary.second,
+ 	     interval.macro.first, interval.macro.second);
+   spans->quick_push (interval);
+-  
++
+   /* Start an interval for the main file.  */
+   interval.ordinary.first = interval.ordinary.second;
+   interval.macro.second = interval.macro.first;
+@@ -14965,7 +14966,7 @@ module_state::write_namespaces (elf_out *to, vec<depset *> spaces,
+ 
+       dump () && dump ("Writing namespace:%u %N%s%s%s%s",
+ 		       b->cluster, ns,
+-		       flags & 1 ? ", public" : "", 
++		       flags & 1 ? ", public" : "",
+ 		       flags & 2 ? ", inline" : "",
+ 		       flags & 4 ? ", purview" : "",
+ 		       flags & 8 ? ", export" : "");
+@@ -15017,7 +15018,7 @@ module_state::read_namespaces (unsigned num)
+ 
+       dump () && dump ("Read namespace:%u %P%s%s%s%s",
+ 		       entity_index, parent, id,
+-		       flags & 1 ? ", public" : "", 
++		       flags & 1 ? ", public" : "",
+ 		       flags & 2 ? ", inline" : "",
+ 		       flags & 4 ? ", purview" : "",
+ 		       flags & 8 ? ", export" : "");
+@@ -15878,7 +15879,7 @@ module_state::write_prepare_maps (module_state_config *)
+   dump.outdent ();
+ 
+   info.max_range = max_range;
+-  
++
+   return info;
+ }
+ 
+@@ -16170,7 +16171,7 @@ module_state::read_ordinary_maps ()
+       filenames.quick_push (fname);
+     }
+ 
+-  unsigned num_ordinary = sec.u (); 
++  unsigned num_ordinary = sec.u ();
+   unsigned max_range = sec.u ();
+   unsigned low_bits = sec.u ();
+   location_t zero = sec.u ();
+@@ -16239,7 +16240,7 @@ module_state::read_ordinary_maps ()
+     spans.close ();
+ 
+   filenames.release ();
+-  
++
+   dump.outdent ();
+   if (!sec.end (from ()))
+     return false;
+@@ -17137,7 +17138,7 @@ module_state::write_inits (elf_out *to, depset::hash &table, unsigned *crc_ptr)
+ 
+       list = tls_aggregates;
+     }
+-  
++
+   sec.end (to, to->name (MOD_SNAME_PFX ".ini"), crc_ptr);
+   dump.outdent ();
+ 
+@@ -17200,7 +17201,7 @@ module_state::read_inits (unsigned count)
+   post_load_processing ();
+   dump.outdent ();
+   if (!sec.end (from ()))
+-    return false;  
++    return false;
+   return true;
+ }
+ 
+@@ -17307,7 +17308,7 @@ module_state::write_config (elf_out *to, module_state_config &config,
+ 
+   cfg.u (config.ordinary_locs);
+   cfg.u (config.macro_locs);
+-  cfg.u (config.ordinary_loc_align);  
++  cfg.u (config.ordinary_loc_align);
+ 
+   /* Now generate CRC, we'll have incorporated the inner CRC because
+      of its serialization above.  */
+@@ -18036,7 +18037,7 @@ module_state::read_language (bool outermost)
+     ok = false;
+ 
+   function_depth--;
+-  
++
+   announce (flag_module_lazy ? "lazy" : "imported");
+   loadedness = ML_LANGUAGE;
+ 
+@@ -18086,7 +18087,7 @@ module_state::load_section (unsigned snum, binding_slot *mslot)
+       slurp->lru = ++lazy_lru;
+       slurp->current = old_current;
+     }
+-  
++
+   if (mslot && mslot->is_lazy ())
+     {
+       /* Oops, the section didn't set this slot.  */
+@@ -18741,7 +18742,7 @@ module_state::lazy_load (unsigned index, binding_slot *mslot)
+   dump () && dump ("Loading entity %M[%u] section:%u", this, index, snum);
+ 
+   bool ok = load_section (snum, mslot);
+- 
++
+   dump.pop (n);
+ 
+   return ok;
+@@ -19037,7 +19038,7 @@ module_add_import_initializers ()
+ 	      tree call = cp_build_function_call_vec (fndecl, &args,
+ 						      tf_warning_or_error);
+ 	      finish_expr_stmt (call);
+-	      
++
+ 	      calls++;
+ 	    }
+ 	}
+@@ -19196,7 +19197,7 @@ maybe_translate_include (cpp_reader *reader, line_maps *lmaps, location_t loc,
+ 
+   if (!(xlate > 0))
+     return nullptr;
+-  
++
+   /* Create the translation text.  */
+   loc = ordinary_loc_of (lmaps, loc);
+   const line_map_ordinary *map
+@@ -20043,7 +20044,7 @@ module_preprocess_options (cpp_reader *reader)
+   if (modules_p ())
+     {
+       auto *cb = cpp_get_callbacks (reader);
+-      
++
+       cb->translate_include = maybe_translate_include;
+       cb->user_deferred_macro = module_state::deferred_macro;
+       if (flag_header_unit)
+diff --git a/gcc/system.h b/gcc/system.h
+index 28c721565a4..33e7eea756a 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -56,8 +56,8 @@ along with GCC; see the file COPYING3.  If not see
+    the names to 64bit capable functions for LARGE_FILES support. These
+    redefs are pointless here so we can override them.  */
+ 
+-#undef fopen 
+-#undef freopen 
++#undef fopen
++#undef freopen
+ 
+ #define fopen(PATH, MODE) fopen_unlocked (PATH, MODE)
+ #define fdopen(FILDES, MODE) fdopen_unlocked (FILDES, MODE)
+@@ -228,10 +228,17 @@ extern int fprintf_unlocked (FILE *, const char *, ...);
+ # include <type_traits>
+ #endif
+ 
++#ifdef INCLUDE_CTYPE
++#include <ctype.h>
++#define ISUPPER(x) isupper(x)
++#define ISALPHA(x) isalpha(x)
++#define ISDIGIT(x) isdigit(x)
++#else
+ /* There are an extraordinary number of issues with <ctype.h>.
+    The last straw is that it varies with the locale.  Use libiberty's
+    replacement instead.  */
+ #include "safe-ctype.h"
++#endif
+ 
+ #include <sys/types.h>
+ 
+@@ -395,7 +402,7 @@ extern int errno;
+ 
+ /* This macro rounds x down to the y boundary.  */
+ #define ROUND_DOWN(x,y) ((x) & ~((y) - 1))
+- 	
++
+ #ifdef HAVE_SYS_WAIT_H
+ #include <sys/wait.h>
+ #endif
+-- 
+2.54.0
+

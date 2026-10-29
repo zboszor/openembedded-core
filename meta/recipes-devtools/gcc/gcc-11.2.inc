@@ -78,6 +78,7 @@ SRC_URI = "\
            file://0004-CVE-2021-42574.patch \
            file://0001-CVE-2021-46195.patch \
            file://0001-libcody-Make-it-buildable-by-C-11-to-C-26.patch \
+           file://0001-Conditionally-use-ctype.h-in-gcc-system.h.patch \
 "
 SRC_URI[sha256sum] = "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
 
